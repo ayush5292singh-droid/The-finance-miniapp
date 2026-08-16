@@ -2,2697 +2,517 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Finance Manager</title>
-
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-body{
-    background:#070914;
-    color:#fff;
-    min-height:100vh;
-}
-
-button,input,select{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-.hidden{
-    display:none!important;
-}
-
-/* LOCK SCREEN */
-
-#lockScreen{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    background:
-        radial-gradient(circle at 50% 20%,#292060 0%,#090a16 45%,#05060c 100%);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:25px;
-}
-
-.lockBox{
-    width:100%;
-    max-width:430px;
-    padding:35px 25px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(18,20,36,.82);
-    backdrop-filter:blur(20px);
-    border-radius:30px;
-    text-align:center;
-    box-shadow:0 30px 100px rgba(0,0,0,.5);
-}
-
-.lockIcon{
-    width:85px;
-    height:85px;
-    border-radius:25px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:auto auto 20px;
-    font-size:40px;
-    background:linear-gradient(135deg,#6350ef,#428cf5);
-}
-
-.lockBox h1{
-    font-size:32px;
-    margin-bottom:8px;
-}
-
-.lockBox p{
-    color:#969ab0;
-    margin-bottom:25px;
-}
-
-#passwordInput{
-    width:100%;
-    padding:16px;
-    border:1px solid #343750;
-    background:#0d1020;
-    color:#fff;
-    border-radius:15px;
-    outline:none;
-    text-align:center;
-    font-size:22px;
-    letter-spacing:7px;
-}
-
-.unlockBtn{
-    width:100%;
-    border:0;
-    padding:16px;
-    margin-top:15px;
-    border-radius:15px;
-    background:linear-gradient(90deg,#6552f2,#438ff7);
-    color:#fff;
-    font-weight:800;
-}
-
-.error{
-    color:#ff7070;
-    margin-top:12px;
-    min-height:20px;
-}
-
-/* APP */
-
-.app{
-    width:min(1250px,100%);
-    margin:auto;
-    padding:35px 22px 100px;
-}
-
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    margin-bottom:35px;
-}
-
-.welcome{
-    color:#8e93aa;
-    letter-spacing:4px;
-    font-weight:700;
-    font-size:13px;
-}
-
-.logo{
-    font-size:clamp(48px,7vw,82px);
-    line-height:.92;
-    font-weight:900;
-    margin-top:10px;
-}
-
-.logo span{
-    display:block;
-    color:#7661ff;
-}
-
-.subtitle{
-    color:#8f94aa;
-    font-size:18px;
-    margin-top:18px;
-}
-
-.robot{
-    font-size:100px;
-    filter:drop-shadow(0 0 35px rgba(111,94,255,.5));
-}
-
-/* BALANCE */
-
-.balance{
-    border-radius:32px;
-    padding:35px;
-    min-height:270px;
-    background:linear-gradient(120deg,#6748f1,#6258f5 45%,#438ff5);
-    box-shadow:0 20px 60px rgba(79,74,230,.25);
-    position:relative;
-    overflow:hidden;
-}
-
-.balance:after{
-    content:"";
-    position:absolute;
-    width:300px;
-    height:300px;
-    right:-120px;
-    bottom:-180px;
-    border-radius:50%;
-    border:60px solid rgba(255,255,255,.08);
-}
-
-.label{
-    letter-spacing:3px;
-    font-size:13px;
-    font-weight:800;
-    opacity:.8;
-}
-
-.available{
-    margin-top:8px;
-    opacity:.8;
-}
-
-.balanceAmount{
-    font-size:clamp(42px,7vw,72px);
-    font-weight:900;
-    margin-top:28px;
-}
-
-.balanceDesc{
-    opacity:.75;
-    margin-top:10px;
-}
-
-/* SALARY */
-
-.salaryCard{
-    margin-top:22px;
-    padding:24px;
-    border:1px solid #292d43;
-    background:#121523;
-    border-radius:25px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-}
-
-.salaryLeft{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.salaryIcon{
-    width:65px;
-    height:65px;
-    background:#202342;
-    border-radius:20px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-}
-
-.salaryTitle{
-    color:#8e94ac;
-    font-size:13px;
-    letter-spacing:3px;
-    font-weight:800;
-}
-
-.salaryValue{
-    font-size:32px;
-    font-weight:900;
-    margin-top:5px;
-}
-
-.addBtn{
-    border:0;
-    color:#bdb6ff;
-    background:#252b4a;
-    padding:14px 20px;
-    border-radius:15px;
-    font-weight:800;
-}
-
-/* NAV */
-
-.nav{
-    display:flex;
-    gap:10px;
-    margin:28px 0;
-    flex-wrap:wrap;
-}
-
-.nav button{
-    border:1px solid #303449;
-    background:#121522;
-    color:#cfd2df;
-    padding:12px 18px;
-    border-radius:14px;
-}
-
-.nav button.active{
-    background:#6a58ed;
-    border-color:#6a58ed;
-    color:#fff;
-}
-
-/* SECTIONS */
-
-.section{
-    margin-top:30px;
-}
-
-.sectionLabel{
-    color:#8d93ab;
-    letter-spacing:3px;
-    font-weight:800;
-    font-size:13px;
-}
-
-.section h2{
-    font-size:35px;
-    margin-top:7px;
-}
-
-/* EXPENSES */
-
-.expenseTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-.primary{
-    border:0;
-    background:linear-gradient(90deg,#6755ee,#438cf5);
-    color:white;
-    padding:15px 22px;
-    border-radius:15px;
-    font-weight:800;
-}
-
-.expenseForm{
-    margin-top:20px;
-    padding:22px;
-    border-radius:22px;
-    background:#111421;
-    border:1px solid #292d40;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.field{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-}
-
-.field label{
-    color:#969bb0;
-    font-size:13px;
-}
-
-.field input,
-.field select{
-    width:100%;
-    padding:14px;
-    border-radius:13px;
-    border:1px solid #33374d;
-    outline:none;
-    background:#0b0e19;
-    color:#fff;
-}
-
-.formButtons{
-    display:flex;
-    gap:10px;
-    margin-top:18px;
-}
-
-.secondary{
-    border:1px solid #383d52;
-    background:#181b29;
-    color:#fff;
-    padding:13px 18px;
-    border-radius:13px;
-}
-
-.expenseList{
-    margin-top:20px;
-    display:grid;
-    gap:14px;
-}
-
-.empty{
-    text-align:center;
-    padding:45px 20px;
-    color:#858a9e;
-    border:1px dashed #313548;
-    border-radius:22px;
-}
-
-.expenseCard{
-    background:#111421;
-    border:1px solid #292d40;
-    border-radius:22px;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-}
-
-.expenseInfo{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.expenseEmoji{
-    width:52px;
-    height:52px;
-    border-radius:16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#222642;
-    font-size:24px;
-}
-
-.expenseName{
-    font-weight:800;
-    font-size:17px;
-}
-
-.expenseDate{
-    color:#777d94;
-    font-size:13px;
-    margin-top:4px;
-}
-
-.expenseAmount{
-    color:#ff7373;
-    font-weight:900;
-    font-size:20px;
-}
-
-.deleteBtn{
-    margin-top:7px;
-    border:0;
-    background:transparent;
-    color:#777d94;
-    font-size:12px;
-}
-
-/* SCANNER */
-
-.scanner{
-    margin-top:20px;
-    background:#0e111d;
-    border:1px solid #292d40;
-    border-radius:25px;
-    padding:20px;
-}
-
-.cameraBox{
-    position:relative;
-    overflow:hidden;
-    border-radius:20px;
-    background:#02030a;
-    min-height:260px;
-}
-
-#video{
-    width:100%;
-    display:block;
-    max-height:500px;
-    object-fit:cover;
-}
-
-#canvas{
-    display:none;
-}
-
-.scanLine{
-    position:absolute;
-    left:10%;
-    right:10%;
-    top:50%;
-    height:2px;
-    background:#65a0ff;
-    box-shadow:0 0 20px #65a0ff;
-}
-
-.scannerControls{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:15px;
-}
-
-.scanStatus{
-    color:#999fb3;
-    margin-top:12px;
-    font-size:14px;
-}
-
-.ocrText{
-    margin-top:15px;
-    padding:15px;
-    background:#090b14;
-    border-radius:15px;
-    color:#aeb3c5;
-    white-space:pre-wrap;
-    max-height:200px;
-    overflow:auto;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif}
+body{background:#070914;color:white;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+#lock{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#292060,#070914 55%)}
+.lockbox{width:100%;max-width:430px;text-align:center;padding:35px 25px;background:#121424eF;border:1px solid #30344c;border-radius:30px;box-shadow:0 30px 100px #0008}
+.lockicon{font-size:45px;width:85px;height:85px;display:flex;align-items:center;justify-content:center;margin:auto auto 20px;border-radius:25px;background:linear-gradient(135deg,#6350ef,#428cf5)}
+.lockbox h1{font-size:32px}.lockbox p{color:#9298ad;margin:8px 0 25px}
+#password{width:100%;padding:16px;background:#0b0e19;border:1px solid #343750;border-radius:15px;color:white;text-align:center;font-size:22px;letter-spacing:7px}
+.btn{border:0;padding:14px 20px;border-radius:14px;color:white;background:linear-gradient(90deg,#6755ee,#438cf5);font-weight:800}
+.error{color:#ff7070;min-height:22px;margin-top:10px}
+.app{max-width:1250px;margin:auto;padding:30px 18px 100px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.welcome,.label,.smalllabel{color:#8e94aa;letter-spacing:3px;font-size:12px;font-weight:800}
+.logo{font-size:clamp(45px,7vw,80px);font-weight:900;line-height:.9;margin-top:10px}.logo span{display:block;color:#7661ff}
+.subtitle{color:#8f94aa;margin-top:15px}.robot{font-size:85px;filter:drop-shadow(0 0 30px #7661ff)}
+.balance{padding:35px;border-radius:30px;background:linear-gradient(120deg,#6748f1,#438ff5);box-shadow:0 20px 60px #4e4ae944}
+.balanceAmount{font-size:clamp(42px,7vw,70px);font-weight:900;margin-top:25px}.available{opacity:.8;margin-top:7px}
+.salary{margin-top:20px;padding:22px;border:1px solid #292d43;background:#121523;border-radius:22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.salaryvalue{font-size:30px;font-weight:900}.salarytitle{color:#8e94ac;font-size:12px;letter-spacing:3px}
+.icon{width:60px;height:60px;border-radius:18px;background:#222642;display:flex;align-items:center;justify-content:center;font-size:28px}
+.salaryleft{display:flex;gap:15px;align-items:center}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0}.nav button{padding:12px 16px;border:1px solid #303449;background:#121522;color:#d0d3df;border-radius:13px}.nav .active{background:#6a58ed;border-color:#6a58ed}
+.section{margin-top:25px}.section h2{font-size:34px;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:20px}.card{background:#111421;border:1px solid #292d40;border-radius:21px;padding:21px}.card span{color:#858ba1;font-size:12px}.card strong{display:block;font-size:27px;margin-top:8px}
+.form{margin-top:18px;padding:20px;background:#111421;border:1px solid #292d40;border-radius:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:7px}.field label{color:#969bb0;font-size:13px}.field input,.field select{padding:13px;border-radius:12px;border:1px solid #33374d;background:#0b0e19;color:white;outline:none}
+.actions{display:flex;gap:10px;margin-top:16px}.secondary{padding:12px 17px;border:1px solid #383d52;background:#181b29;color:white;border-radius:12px}
+.list{display:grid;gap:13px;margin-top:18px}.expense{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px;background:#111421;border:1px solid #292d40;border-radius:20px}.expenseleft{display:flex;align-items:center;gap:14px}.emoji{width:50px;height:50px;border-radius:15px;background:#222642;display:flex;align-items:center;justify-content:center;font-size:23px}.amount{color:#ff7373;font-weight:900;font-size:19px}
+.delete{border:0;background:none;color:#777d94;font-size:12px;margin-top:5px}
+.empty{text-align:center;padding:40px;color:#858a9e;border:1px dashed #313548;border-radius:20px}
+
+/* LOANS */
+.loanSummary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.loanCard{background:#111421;border:1px solid #292d40;border-radius:22px;padding:20px}
+.loanTop{display:flex;justify-content:space-between;gap:10px}.loanName{font-size:19px;font-weight:800}.loanBalance{font-size:28px;font-weight:900;margin:15px 0 3px}
+.progress{height:9px;background:#292e43;border-radius:20px;overflow:hidden;margin:15px 0 7px}.progressbar{height:100%;background:linear-gradient(90deg,#7355ff,#409cff)}
+.loanInfo{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.loanInfo div{padding:11px;background:#0e1220;border-radius:11px}.loanInfo small{display:block;color:#858ba1}
+.loanButtons{display:flex;gap:8px;margin-top:13px}.loanButtons button{padding:9px 12px;border-radius:10px;border:0}.pay{background:#1c805d;color:white}.remove{background:#321b23;color:#ff8b9b}
+.loanTotal{font-size:25px;font-weight:900}
 
 /* CALENDAR */
+.calendar{margin-top:20px;background:#101320;border:1px solid #292d40;border-radius:23px;overflow:hidden}.calhead{padding:23px;background:linear-gradient(120deg,#16b976,#14b978)}.caltitle{display:flex;justify-content:space-between;align-items:center}.calbuttons button{width:40px;height:40px;border:1px solid #ffffff55;background:#ffffff18;color:white;border-radius:10px}.week,.days{display:grid;grid-template-columns:repeat(7,1fr)}.week div{text-align:center;padding:12px;color:#8e94aa;font-size:12px}.day{min-height:85px;border:1px solid #222638;padding:7px;cursor:pointer}.day.other{opacity:.25}.today{box-shadow:inset 0 0 0 2px #7662ff}.dayexp{color:#ff7777;font-size:10px;font-weight:800;margin-top:12px}
 
-.calendar{
-    margin-top:20px;
-    border-radius:25px;
-    overflow:hidden;
-    border:1px solid #292d40;
-    background:#101320;
-}
-
-.calendarHeader{
-    background:linear-gradient(120deg,#16b976,#14b978);
-    padding:25px;
-}
-
-.calendarTitle{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.calendarTitle h3{
-    font-size:25px;
-}
-
-.monthButtons{
-    display:flex;
-    gap:8px;
-}
-
-.monthButtons button{
-    width:42px;
-    height:42px;
-    border:1px solid rgba(255,255,255,.3);
-    background:rgba(255,255,255,.12);
-    color:#fff;
-    border-radius:12px;
-}
-
-.calendarTotals{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    margin-top:22px;
-    text-align:center;
-}
-
-.calendarTotals small{
-    opacity:.8;
-}
-
-.calendarTotals strong{
-    display:block;
-    margin-top:5px;
-}
-
-.weekdays,
-.calendarGrid{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-}
-
-.weekdays div{
-    text-align:center;
-    padding:13px 3px;
-    color:#8e94aa;
-    font-size:12px;
-    font-weight:700;
-}
-
-.calendarDay{
-    min-height:100px;
-    border:1px solid #222638;
-    padding:8px;
-    cursor:pointer;
-    position:relative;
-}
-
-.calendarDay:hover{
-    background:#171b2c;
-}
-
-.calendarDay.other{
-    opacity:.25;
-}
-
-.dayNumber{
-    font-size:12px;
-    color:#b3b7c6;
-}
-
-.dayExpense{
-    margin-top:15px;
-    color:#ff7777;
-    font-size:11px;
-    font-weight:800;
-}
-
-.dayIncome{
-    color:#55d99b;
-    font-size:11px;
-    margin-top:5px;
-    font-weight:800;
-}
-
-.today{
-    box-shadow:inset 0 0 0 2px #7662ff;
-}
-
-/* STATS */
-
-.statsGrid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-top:20px;
-}
-
-.statCard{
-    background:#111421;
-    border:1px solid #292d40;
-    border-radius:22px;
-    padding:22px;
-}
-
-.statCard span{
-    color:#858ba1;
-    font-size:13px;
-}
-
-.statCard strong{
-    display:block;
-    font-size:28px;
-    margin-top:8px;
-}
-
-.barChart{
-    margin-top:20px;
-    height:280px;
-    display:flex;
-    align-items:end;
-    gap:12px;
-    padding:20px;
-    background:#111421;
-    border:1px solid #292d40;
-    border-radius:22px;
-}
-
-.barWrap{
-    flex:1;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:end;
-    align-items:center;
-    gap:8px;
-}
-
-.bar{
-    width:100%;
-    max-width:45px;
-    border-radius:9px 9px 2px 2px;
-    background:linear-gradient(#7662ff,#438cf5);
-    min-height:3px;
-}
-
-.barLabel{
-    color:#777d94;
-    font-size:11px;
-}
-
-/* MODAL */
-
-.modal{
-    position:fixed;
-    inset:0;
-    z-index:5000;
-    background:rgba(0,0,0,.75);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.modalBox{
-    width:100%;
-    max-width:500px;
-    background:#121522;
-    border:1px solid #34384e;
-    border-radius:25px;
-    padding:25px;
-}
-
-.modalHeader{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.close{
-    width:40px;
-    height:40px;
-    border:0;
-    background:#252a3c;
-    color:#fff;
-    border-radius:12px;
-    font-size:20px;
-}
-
-.dayTransactions{
-    margin-top:20px;
-    display:grid;
-    gap:10px;
-}
-
-/* TOAST */
-
-.toast{
-    position:fixed;
-    bottom:25px;
-    left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:#202437;
-    border:1px solid #3b4058;
-    padding:14px 20px;
-    border-radius:15px;
-    z-index:10000;
-    transition:.3s;
-    box-shadow:0 15px 40px rgba(0,0,0,.4);
-}
-
-.toast.show{
-    transform:translateX(-50%) translateY(0);
-}
-
-/* RESPONSIVE */
-
-@media(max-width:700px){
-
-    .app{
-        padding:25px 14px 80px;
-    }
-
-    header{
-        align-items:flex-start;
-    }
-
-    .robot{
-        font-size:65px;
-    }
-
-    .balance{
-        padding:25px;
-        min-height:230px;
-    }
-
-    .salaryCard{
-        align-items:flex-start;
-    }
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-
-    .statsGrid{
-        grid-template-columns:1fr;
-    }
-
-    .calendarDay{
-        min-height:72px;
-    }
-
-    .dayExpense,
-    .dayIncome{
-        font-size:9px;
-    }
-
-    .calendarTotals{
-        font-size:13px;
-    }
-}
+/* SCANNER */
+.scanner{margin-top:18px;padding:20px;background:#0e111d;border:1px solid #292d40;border-radius:22px}.camera{position:relative;background:#000;border-radius:18px;overflow:hidden;min-height:250px}.camera video{width:100%;display:block;max-height:500px;object-fit:cover}.scanline{position:absolute;left:10%;right:10%;top:50%;height:2px;background:#65a0ff;box-shadow:0 0 20px #65a0ff}.ocr{margin-top:12px;padding:15px;background:#090b14;border-radius:14px;color:#aeb3c5;white-space:pre-wrap;max-height:180px;overflow:auto}
+.bars{height:250px;display:flex;align-items:end;gap:10px;margin-top:18px;padding:15px;background:#111421;border-radius:20px}.barwrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:6px}.bar{width:70%;max-width:45px;background:linear-gradient(#7662ff,#438cf5);border-radius:8px 8px 2px 2px;min-height:3px}
+.modal{position:fixed;inset:0;z-index:5000;background:#000b;display:flex;align-items:center;justify-content:center;padding:20px}.modalbox{width:100%;max-width:500px;background:#121522;border:1px solid #34384e;border-radius:24px;padding:23px}.modalhead{display:flex;justify-content:space-between}.close{width:40px;height:40px;border:0;background:#252a3c;color:white;border-radius:10px;font-size:20px}
+.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,120px);background:#202437;border:1px solid #3b4058;padding:13px 20px;border-radius:14px;z-index:10000;transition:.3s}.toast.show{transform:translate(-50%,0)}
+@media(max-width:700px){.app{padding:23px 13px 70px}header{align-items:flex-start}.robot{font-size:60px}.grid,.stats,.loanSummary{grid-template-columns:1fr}.balance{padding:25px}.salary{align-items:flex-start}.day{min-height:65px}.loanInfo{font-size:13px}}
 </style>
 </head>
 
 <body>
 
-<!-- LOCK SCREEN -->
-
-<div id="lockScreen">
-    <div class="lockBox">
-        <div class="lockIcon">🔐</div>
-        <h1>Finance Manager</h1>
-        <p>Your money. Your control.</p>
-
-        <input
-            id="passwordInput"
-            type="password"
-            inputmode="numeric"
-            maxlength="4"
-            placeholder="••••"
-        >
-
-        <button class="unlockBtn" onclick="unlock()">
-            ENTER
-        </button>
-
-        <div id="lockError" class="error"></div>
-    </div>
+<div id="lock">
+<div class="lockbox">
+<div class="lockicon">🔐</div>
+<h1>Finance Manager</h1>
+<p>Your money. Your control.</p>
+<input id="password" type="password" maxlength="4" inputmode="numeric" placeholder="••••">
+<button class="btn" style="width:100%;margin-top:14px" onclick="unlock()">ENTER</button>
+<div id="error" class="error"></div>
 </div>
-
-
-<!-- MAIN APP -->
+</div>
 
 <main id="app" class="app hidden">
 
 <header>
-    <div>
-        <div class="welcome">WELCOME BACK</div>
-
-        <div class="logo">
-            FINANCE
-            <span>MANAGER</span>
-        </div>
-
-        <div class="subtitle">
-            Take control of your money.
-        </div>
-    </div>
-
-    <div class="robot">🤖</div>
+<div>
+<div class="welcome">WELCOME BACK</div>
+<div class="logo">FINANCE<span>MANAGER</span></div>
+<div class="subtitle">Take control of your money.</div>
+</div>
+<div class="robot">🤖</div>
 </header>
 
-
-<!-- BALANCE -->
-
 <section class="balance">
-
-    <div class="label">TOTAL BALANCE</div>
-    <div class="available">● Available</div>
-
-    <div id="balanceAmount" class="balanceAmount">
-        ₹0
-    </div>
-
-    <div class="balanceDesc">
-        Your available money
-    </div>
-
+<div class="label">TOTAL BALANCE</div>
+<div class="available">● Available</div>
+<div id="balance" class="balanceAmount">₹0</div>
 </section>
 
-
-<!-- SALARY -->
-
-<section class="salaryCard">
-
-    <div class="salaryLeft">
-
-        <div class="salaryIcon">💼</div>
-
-        <div>
-            <div class="salaryTitle">
-                SALARY PER MONTH
-            </div>
-
-            <div id="salaryValue" class="salaryValue">
-                ₹0
-            </div>
-        </div>
-
-    </div>
-
-    <button class="addBtn" onclick="openSalary()">
-        + ADD
-    </button>
-
+<section class="salary">
+<div class="salaryleft">
+<div class="icon">💼</div>
+<div><div class="salarytitle">SALARY PER MONTH</div><div id="salary" class="salaryvalue">₹0</div></div>
+</div>
+<button class="secondary" onclick="salaryModal()">+ ADD</button>
 </section>
-
-
-<!-- NAVIGATION -->
 
 <nav class="nav">
-
-    <button id="navDashboard" onclick="showSection('dashboard')">
-        🏠 Dashboard
-    </button>
-
-    <button id="navExpenses" onclick="showSection('expenses')">
-        💸 Expenses
-    </button>
-
-    <button id="navCalendar" onclick="showSection('calendar')">
-        📅 Calendar
-    </button>
-
-    <button id="navStats" onclick="showSection('stats')">
-        📊 Stats
-    </button>
-
-    <button onclick="showSection('scanner')">
-        📷 Scan Receipt
-    </button>
-
+<button id="nDashboard" onclick="section('dashboard')">🏠 Dashboard</button>
+<button id="nExpenses" onclick="section('expenses')">💸 Expenses</button>
+<button id="nLoans" onclick="section('loans')">🏦 Loans</button>
+<button id="nCalendar" onclick="section('calendar')">📅 Calendar</button>
+<button id="nStats" onclick="section('stats')">📊 Stats</button>
+<button id="nScanner" onclick="section('scanner')">📷 Scanner</button>
 </nav>
 
-
-<!-- DASHBOARD -->
-
 <section id="dashboard" class="section">
-
-    <div class="sectionLabel">OVERVIEW</div>
-
-    <h2>
-        Your Money<br>
-        Stay in control 💪
-    </h2>
-
-    <p style="color:#8d93a8;margin-top:8px;">
-        Track your spending and manage your money.
-    </p>
-
-    <div class="statsGrid">
-
-        <div class="statCard">
-            <span>TODAY</span>
-            <strong id="todaySpend">₹0</strong>
-        </div>
-
-        <div class="statCard">
-            <span>THIS MONTH</span>
-            <strong id="monthSpend">₹0</strong>
-        </div>
-
-        <div class="statCard">
-            <span>TOTAL EXPENSES</span>
-            <strong id="totalSpend">₹0</strong>
-        </div>
-
-    </div>
-
+<div class="smalllabel">OVERVIEW</div>
+<h2>Your Money<br>Stay in control 💪</h2>
+<div class="stats">
+<div class="card"><span>TODAY</span><strong id="today">₹0</strong></div>
+<div class="card"><span>THIS MONTH</span><strong id="month">₹0</strong></div>
+<div class="card"><span>TOTAL EXPENSES</span><strong id="total">₹0</strong></div>
+</div>
 </section>
-
-
-<!-- EXPENSES -->
 
 <section id="expenses" class="section hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+<div><div class="smalllabel">MONEY TRACKER</div><h2>Expenses</h2></div>
+<button class="btn" onclick="toggleExpense()">+ ADD EXPENSE</button>
+</div>
 
-    <div class="expenseTop">
-
-        <div>
-            <div class="sectionLabel">MONEY TRACKER</div>
-            <h2>Expenses</h2>
-        </div>
-
-        <button class="primary" onclick="toggleExpenseForm()">
-            + ADD EXPENSE
-        </button>
-
-    </div>
-
-
-    <div id="expenseForm" class="expenseForm hidden">
-
-        <div class="grid">
-
-            <div class="field">
-                <label>Expense title</label>
-                <input
-                    id="expenseTitle"
-                    placeholder="e.g. Food"
-                >
-            </div>
-
-            <div class="field">
-                <label>Amount spent</label>
-                <input
-                    id="expenseAmount"
-                    type="number"
-                    min="0"
-                    placeholder="₹ Amount"
-                >
-            </div>
-
-            <div class="field">
-                <label>Date</label>
-                <input id="expenseDate" type="date">
-            </div>
-
-            <div class="field">
-                <label>Category</label>
-
-                <select id="expenseCategory">
-
-                    <option value="Food">🍔 Food</option>
-                    <option value="Travel">🚗 Travel</option>
-                    <option value="Shopping">🛍️ Shopping</option>
-                    <option value="Bills">💡 Bills</option>
-                    <option value="Education">📚 Education</option>
-                    <option value="Health">❤️ Health</option>
-                    <option value="Entertainment">🎮 Entertainment</option>
-                    <option value="Other">💰 Other</option>
-
-                </select>
-            </div>
-
-        </div>
-
-        <div class="formButtons">
-
-            <button class="primary" onclick="saveExpense()">
-                SAVE EXPENSE
-            </button>
-
-            <button class="secondary" onclick="toggleExpenseForm()">
-                CANCEL
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div id="expenseList" class="expenseList"></div>
-
+<div id="expenseForm" class="form hidden">
+<div class="grid">
+<div class="field"><label>Expense title</label><input id="etitle" placeholder="Food"></div>
+<div class="field"><label>Amount</label><input id="eamount" type="number" placeholder="₹"></div>
+<div class="field"><label>Date</label><input id="edate" type="date"></div>
+<div class="field"><label>Category</label><select id="ecat">
+<option>Food</option><option>Travel</option><option>Shopping</option><option>Bills</option><option>Education</option><option>Health</option><option>Entertainment</option><option>Other</option>
+</select></div>
+</div>
+<div class="actions"><button class="btn" onclick="addExpense()">SAVE EXPENSE</button><button class="secondary" onclick="toggleExpense()">CANCEL</button></div>
+</div>
+<div id="expenseList" class="list"></div>
 </section>
 
+<section id="loans" class="section hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+<div><div class="smalllabel">DEBT TRACKER</div><h2>Loan Manager 🏦</h2></div>
+<button class="btn" onclick="toggleLoan()">+ ADD LOAN</button>
+</div>
 
-<!-- CALENDAR -->
+<div class="loanSummary">
+<div class="card"><span>TOTAL LOAN</span><strong id="loanTotal">₹0</strong></div>
+<div class="card"><span>REMAINING</span><strong id="loanRemain">₹0</strong></div>
+<div class="card"><span>MONTHLY EMI</span><strong id="loanEMITotal">₹0</strong></div>
+</div>
+
+<div id="loanForm" class="form hidden">
+<div class="grid">
+<div class="field"><label>Loan name</label><input id="lname" placeholder="Home Loan"></div>
+<div class="field"><label>Total loan</label><input id="lamount" type="number" placeholder="₹"></div>
+<div class="field"><label>Remaining amount</label><input id="lremain" type="number" placeholder="₹"></div>
+<div class="field"><label>Interest rate %</label><input id="linterest" type="number" step=".01" placeholder="8.5"></div>
+<div class="field"><label>Monthly EMI</label><input id="lemi" type="number" placeholder="₹"></div>
+<div class="field"><label>Next payment</label><input id="ldate" type="date"></div>
+</div>
+<div class="actions"><button class="btn" onclick="addLoan()">SAVE LOAN</button><button class="secondary" onclick="toggleLoan()">CANCEL</button></div>
+</div>
+
+<div id="loanList" class="list"></div>
+</section>
 
 <section id="calendar" class="section hidden">
-
-    <div class="sectionLabel">
-        TRANSACTION CALENDAR
-    </div>
-
-    <h2>
-        Monthly Calendar
-    </h2>
-
-    <div class="calendar">
-
-        <div class="calendarHeader">
-
-            <div class="calendarTitle">
-
-                <h3 id="monthTitle">
-                    January 2026
-                </h3>
-
-                <div class="monthButtons">
-
-                    <button onclick="changeMonth(-1)">
-                        ‹
-                    </button>
-
-                    <button onclick="changeMonth(1)">
-                        ›
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div class="calendarTotals">
-
-                <div>
-                    <small>Income</small>
-                    <strong id="calendarIncome">
-                        ₹0
-                    </strong>
-                </div>
-
-                <div>
-                    <small>Expenses</small>
-                    <strong id="calendarExpense">
-                        ₹0
-                    </strong>
-                </div>
-
-                <div>
-                    <small>Total</small>
-                    <strong id="calendarTotal">
-                        ₹0
-                    </strong>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="weekdays">
-
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
-
-        </div>
-
-        <div id="calendarGrid" class="calendarGrid"></div>
-
-    </div>
-
+<div class="smalllabel">TRANSACTION CALENDAR</div><h2>Monthly Calendar</h2>
+<div class="calendar">
+<div class="calhead">
+<div class="caltitle"><h3 id="monthTitle"></h3><div class="calbuttons"><button onclick="changeMonth(-1)">‹</button><button onclick="changeMonth(1)">›</button></div></div>
+<div style="display:flex;justify-content:space-around;text-align:center;margin-top:18px"><div>Income<br><b id="cincome">₹0</b></div><div>Expenses<br><b id="cexpense">₹0</b></div><div>Balance<br><b id="ctotal">₹0</b></div></div>
+</div>
+<div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+<div id="days" class="days"></div>
+</div>
 </section>
-
-
-<!-- STATS -->
 
 <section id="stats" class="section hidden">
-
-    <div class="sectionLabel">
-        ANALYTICS
-    </div>
-
-    <h2>
-        Weekly Stats
-    </h2>
-
-    <div class="statsGrid">
-
-        <div class="statCard">
-            <span>AVERAGE DAILY</span>
-            <strong id="averageSpend">₹0</strong>
-        </div>
-
-        <div class="statCard">
-            <span>BIGGEST EXPENSE</span>
-            <strong id="biggestExpense">₹0</strong>
-        </div>
-
-        <div class="statCard">
-            <span>TRANSACTIONS</span>
-            <strong id="transactionCount">0</strong>
-        </div>
-
-    </div>
-
-    <h2 style="font-size:25px;margin-top:30px;">
-        Spending This Week
-    </h2>
-
-    <div id="barChart" class="barChart"></div>
-
+<div class="smalllabel">ANALYTICS</div><h2>Statistics</h2>
+<div class="stats">
+<div class="card"><span>AVERAGE</span><strong id="average">₹0</strong></div>
+<div class="card"><span>BIGGEST</span><strong id="biggest">₹0</strong></div>
+<div class="card"><span>TRANSACTIONS</span><strong id="count">0</strong></div>
+</div>
+<h2 style="font-size:25px;margin-top:25px">Last 7 Days</h2>
+<div id="bars" class="bars"></div>
 </section>
 
-
-<!-- SCANNER -->
-
 <section id="scanner" class="section hidden">
-
-    <div class="sectionLabel">
-        SMART SCANNER
-    </div>
-
-    <h2>
-        Scan Receipt 📷
-    </h2>
-
-    <p style="color:#858ba0;margin-top:8px;">
-        Scan a receipt and the app will try to detect its information automatically.
-    </p>
-
-    <div class="scanner">
-
-        <div class="cameraBox">
-
-            <video
-                id="video"
-                autoplay
-                playsinline
-                muted
-            ></video>
-
-            <div class="scanLine"></div>
-
-            <canvas id="canvas"></canvas>
-
-        </div>
-
-        <div class="scannerControls">
-
-            <button class="primary" onclick="startCamera()">
-                📷 START CAMERA
-            </button>
-
-            <button class="primary" onclick="captureReceipt()">
-                📸 CAPTURE
-            </button>
-
-            <button class="secondary" onclick="stopCamera()">
-                STOP
-            </button>
-
-            <label class="secondary" style="display:inline-flex;align-items:center;">
-                🖼️ Upload Receipt
-                <input
-                    type="file"
-                    id="receiptFile"
-                    accept="image/*"
-                    hidden
-                >
-            </label>
-
-        </div>
-
-        <div id="scanStatus" class="scanStatus">
-            Camera is ready.
-        </div>
-
-        <div id="ocrText" class="ocrText hidden"></div>
-
-        <div id="scanResult" class="expenseForm hidden">
-
-            <h3 style="margin-bottom:18px;">
-                Check scanned details
-            </h3>
-
-            <div class="grid">
-
-                <div class="field">
-                    <label>Detected title</label>
-                    <input id="scanTitle">
-                </div>
-
-                <div class="field">
-                    <label>Detected amount</label>
-                    <input id="scanAmount" type="number">
-                </div>
-
-                <div class="field">
-                    <label>Date</label>
-                    <input id="scanDate" type="date">
-                </div>
-
-                <div class="field">
-                    <label>Category</label>
-
-                    <select id="scanCategory">
-
-                        <option>Food</option>
-                        <option>Travel</option>
-                        <option>Shopping</option>
-                        <option>Bills</option>
-                        <option>Education</option>
-                        <option>Health</option>
-                        <option>Entertainment</option>
-                        <option>Other</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-            <div class="formButtons">
-
-                <button class="primary" onclick="saveScannedExpense()">
-                    SAVE SCANNED EXPENSE
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
+<div class="smalllabel">SMART SCANNER</div><h2>Scan Receipt 📷</h2>
+<p style="color:#858ba0;margin-top:7px">Scan or upload a receipt and check the detected details.</p>
+<div class="scanner">
+<div class="camera"><video id="video" autoplay playsinline muted></video><div class="scanline"></div></div>
+<div class="actions">
+<button class="btn" onclick="startCamera()">📷 START</button>
+<button class="btn" onclick="capture()">📸 CAPTURE</button>
+<button class="secondary" onclick="stopCamera()">STOP</button>
+<label class="secondary">🖼️ Upload<input id="file" type="file" accept="image/*" hidden></label>
+</div>
+<div id="scanStatus" style="color:#9298ad;margin-top:12px">Camera ready.</div>
+<div id="ocr" class="ocr hidden"></div>
+<div id="scanForm" class="form hidden">
+<div class="grid">
+<div class="field"><label>Title</label><input id="stitle"></div>
+<div class="field"><label>Amount</label><input id="samount" type="number"></div>
+<div class="field"><label>Date</label><input id="sdate" type="date"></div>
+<div class="field"><label>Category</label><select id="scat"><option>Food</option><option>Travel</option><option>Shopping</option><option>Bills</option><option>Education</option><option>Health</option><option>Entertainment</option><option>Other</option></select></div>
+</div>
+<div class="actions"><button class="btn" onclick="saveScan()">SAVE SCANNED EXPENSE</button></div>
+</div>
+</div>
 </section>
 
 </main>
 
-
-<!-- SALARY MODAL -->
-
 <div id="salaryModal" class="modal hidden">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>
-                Set Salary
-            </h2>
-
-            <button class="close" onclick="closeSalary()">
-                ×
-            </button>
-
-        </div>
-
-        <div class="field" style="margin-top:20px;">
-
-            <label>Monthly salary</label>
-
-            <input
-                id="salaryInput"
-                type="number"
-                min="0"
-                placeholder="₹ 0"
-            >
-
-        </div>
-
-        <button
-            class="primary"
-            style="width:100%;margin-top:18px;"
-            onclick="saveSalary()"
-        >
-            SAVE SALARY
-        </button>
-
-    </div>
-
+<div class="modalbox">
+<div class="modalhead"><h2>Set Salary</h2><button class="close" onclick="closeSalary()">×</button></div>
+<div class="field" style="margin-top:20px"><label>Monthly salary</label><input id="salaryInput" type="number"></div>
+<button class="btn" style="width:100%;margin-top:16px" onclick="saveSalary()">SAVE</button>
 </div>
-
-
-<!-- DAY MODAL -->
+</div>
 
 <div id="dayModal" class="modal hidden">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2 id="dayModalTitle">
-                Transactions
-            </h2>
-
-            <button class="close" onclick="closeDayModal()">
-                ×
-            </button>
-
-        </div>
-
-        <div id="dayTransactions" class="dayTransactions"></div>
-
-    </div>
-
+<div class="modalbox">
+<div class="modalhead"><h2 id="dayTitle"></h2><button class="close" onclick="closeDay()">×</button></div>
+<div id="dayList" class="list"></div>
 </div>
-
+</div>
 
 <div id="toast" class="toast"></div>
 
-
 <script>
+const PASSWORD="7890";
 
-/* =========================
-   DATA
-========================= */
-
-const PASSWORD = "7890";
-
-let data = JSON.parse(
-    localStorage.getItem("financeManagerData")
-) || {
-    salary: 0,
-    expenses: []
+let data=JSON.parse(localStorage.getItem("financeManagerData")||"null")||{
+ salary:0,expenses:[],loans:[]
 };
 
-let calendarDate = new Date();
+if(!Array.isArray(data.loans))data.loans=[];
 
-let cameraStream = null;
+let calDate=new Date(),stream=null;
 
-
-/* =========================
-   LOCK
-========================= */
+const $=id=>document.getElementById(id);
+const money=n=>"₹"+Number(n||0).toLocaleString("en-IN");
 
 function unlock(){
-
-    const value =
-        document.getElementById("passwordInput").value;
-
-    if(value === PASSWORD){
-
-        document.getElementById("lockScreen")
-            .classList.add("hidden");
-
-        document.getElementById("app")
-            .classList.remove("hidden");
-
-        refresh();
-
-    }else{
-
-        document.getElementById("lockError")
-            .textContent = "Incorrect password";
-
-        document.getElementById("passwordInput").value = "";
-
-    }
+ if($("password").value===PASSWORD){
+  $("lock").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  refresh();
+ }else{
+  $("error").textContent="Incorrect password";
+  $("password").value="";
+ }
 }
 
-document.getElementById("passwordInput")
-    .addEventListener("keydown",function(e){
+$("password").addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
 
-        if(e.key === "Enter"){
-            unlock();
-        }
-
-    });
-
-
-/* =========================
-   STORAGE
-========================= */
-
-function saveData(){
-
-    localStorage.setItem(
-        "financeManagerData",
-        JSON.stringify(data)
-    );
-
-}
-
-
-/* =========================
-   MONEY
-========================= */
-
-function totalExpenses(){
-
-    return data.expenses.reduce(
-        (sum,e) => sum + Number(e.amount),
-        0
-    );
-
-}
-
-function balance(){
-
-    return Number(data.salary) - totalExpenses();
-
-}
-
-function money(value){
-
-    return "₹" + Number(value || 0)
-        .toLocaleString("en-IN");
-
-}
-
-
-/* =========================
-   REFRESH
-========================= */
+function save(){localStorage.setItem("financeManagerData",JSON.stringify(data))}
+function expensesTotal(){return data.expenses.reduce((s,e)=>s+Number(e.amount),0)}
+function balance(){return Number(data.salary)-expensesTotal()}
 
 function refresh(){
-
-    document.getElementById("salaryValue")
-        .textContent = money(data.salary);
-
-    document.getElementById("balanceAmount")
-        .textContent = money(balance());
-
-    renderExpenses();
-    updateDashboard();
-    renderCalendar();
-    renderStats();
-
+ $("salary").textContent=money(data.salary);
+ $("balance").textContent=money(balance());
+ renderExpenses();dashboard();renderLoans();calendar();stats();
 }
 
-
-/* =========================
-   SECTIONS
-========================= */
-
-function showSection(id){
-
-    [
-        "dashboard",
-        "expenses",
-        "calendar",
-        "stats",
-        "scanner"
-    ].forEach(section => {
-
-        document
-            .getElementById(section)
-            .classList.add("hidden");
-
-    });
-
-    document
-        .getElementById(id)
-        .classList.remove("hidden");
-
-    document.querySelectorAll(".nav button")
-        .forEach(button => button.classList.remove("active"));
-
-    if(id === "dashboard")
-        document.getElementById("navDashboard")
-            ?.classList.add("active");
-
-    if(id === "expenses")
-        document.getElementById("navExpenses")
-            ?.classList.add("active");
-
-    if(id === "calendar")
-        document.getElementById("navCalendar")
-            ?.classList.add("active");
-
-    if(id === "stats")
-        document.getElementById("navStats")
-            ?.classList.add("active");
-
+function section(id){
+ ["dashboard","expenses","loans","calendar","stats","scanner"].forEach(x=>$(x).classList.add("hidden"));
+ $(id).classList.remove("hidden");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+ const map={dashboard:"nDashboard",expenses:"nExpenses",loans:"nLoans",calendar:"nCalendar",stats:"nStats",scanner:"nScanner"};
+ $(map[id])?.classList.add("active");
 }
 
-
-/* =========================
-   SALARY
-========================= */
-
-function openSalary(){
-
-    document.getElementById("salaryInput").value =
-        data.salary || "";
-
-    document
-        .getElementById("salaryModal")
-        .classList.remove("hidden");
-
+function salaryModal(){
+ $("salaryInput").value=data.salary||"";
+ $("salaryModal").classList.remove("hidden");
 }
-
-function closeSalary(){
-
-    document
-        .getElementById("salaryModal")
-        .classList.add("hidden");
-
-}
-
+function closeSalary(){$("salaryModal").classList.add("hidden")}
 function saveSalary(){
-
-    const value =
-        Number(document.getElementById("salaryInput").value);
-
-    if(value < 0 || isNaN(value)){
-        showToast("Enter a valid amount");
-        return;
-    }
-
-    data.salary = value;
-
-    saveData();
-    closeSalary();
-    refresh();
-
-    showToast("Salary updated");
-
+ let n=Number($("salaryInput").value);
+ if(n<0||isNaN(n))return toast("Enter a valid salary");
+ data.salary=n;save();closeSalary();refresh();toast("Salary saved");
 }
 
-
-/* =========================
-   EXPENSE FORM
-========================= */
-
-function toggleExpenseForm(){
-
-    const form =
-        document.getElementById("expenseForm");
-
-    form.classList.toggle("hidden");
-
-    if(!form.classList.contains("hidden")){
-
-        document.getElementById("expenseDate").value =
-            new Date().toISOString().split("T")[0];
-
-    }
-
+function toggleExpense(){
+ $("expenseForm").classList.toggle("hidden");
+ if(!$("expenseForm").classList.contains("hidden"))
+  $("edate").value=localDate(new Date());
 }
 
-
-/* =========================
-   SAVE EXPENSE
-========================= */
-
-function saveExpense(){
-
-    const title =
-        document.getElementById("expenseTitle").value.trim();
-
-    const amount =
-        Number(document.getElementById("expenseAmount").value);
-
-    const date =
-        document.getElementById("expenseDate").value;
-
-    const category =
-        document.getElementById("expenseCategory").value;
-
-    if(!title){
-
-        showToast("Enter expense title");
-        return;
-
-    }
-
-    if(!amount || amount <= 0){
-
-        showToast("Enter a valid amount");
-        return;
-
-    }
-
-    if(!date){
-
-        showToast("Select a date");
-        return;
-
-    }
-
-    data.expenses.push({
-
-        id: Date.now(),
-
-        title,
-        amount,
-        date,
-        category
-
-    });
-
-    saveData();
-
-    document.getElementById("expenseTitle").value = "";
-    document.getElementById("expenseAmount").value = "";
-
-    document
-        .getElementById("expenseForm")
-        .classList.add("hidden");
-
-    refresh();
-
-    showToast(
-        money(amount) + " deducted from balance"
-    );
-
+function addExpense(){
+ let title=$("etitle").value.trim(),amount=Number($("eamount").value),date=$("edate").value,cat=$("ecat").value;
+ if(!title)return toast("Enter expense title");
+ if(amount<=0)return toast("Enter a valid amount");
+ if(!date)return toast("Select date");
+ data.expenses.push({id:Date.now(),title,amount,date,category:cat});
+ save();$("etitle").value="";$("eamount").value="";$("expenseForm").classList.add("hidden");refresh();
+ toast(money(amount)+" deducted from balance");
 }
 
+function emoji(c){
+ return {Food:"🍔",Travel:"🚗",Shopping:"🛍️",Bills:"💡",Education:"📚",Health:"❤️",Entertainment:"🎮",Other:"💰"}[c]||"💰";
+}
 
-/* =========================
-   RENDER EXPENSES
-========================= */
+function safe(x){
+ return String(x).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
 
 function renderExpenses(){
-
-    const list =
-        document.getElementById("expenseList");
-
-    if(data.expenses.length === 0){
-
-        list.innerHTML = `
-            <div class="empty">
-                <div style="font-size:35px;">💸</div>
-                <h3 style="margin-top:10px;">
-                    No expenses yet
-                </h3>
-                <p style="margin-top:6px;">
-                    Add your first expense to start tracking.
-                </p>
-            </div>
-        `;
-
-        return;
-
-    }
-
-    const sorted =
-        [...data.expenses].sort(
-            (a,b) =>
-            new Date(b.date) - new Date(a.date)
-        );
-
-    list.innerHTML = sorted.map(e => `
-
-        <div class="expenseCard">
-
-            <div class="expenseInfo">
-
-                <div class="expenseEmoji">
-                    ${categoryEmoji(e.category)}
-                </div>
-
-                <div>
-
-                    <div class="expenseName">
-                        ${escapeHTML(e.title)}
-                    </div>
-
-                    <div class="expenseDate">
-                        ${formatDate(e.date)}
-                        • ${escapeHTML(e.category)}
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div style="text-align:right">
-
-                <div class="expenseAmount">
-                    -${money(e.amount)}
-                </div>
-
-                <button
-                    class="deleteBtn"
-                    onclick="deleteExpense(${e.id})"
-                >
-                    Delete
-                </button>
-
-            </div>
-
-        </div>
-
-    `).join("");
-
+ let list=$("expenseList");
+ if(!data.expenses.length){
+  list.innerHTML='<div class="empty">💸<br><b>No expenses yet</b><br>Add your first expense.</div>';return;
+ }
+ list.innerHTML=[...data.expenses].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>`
+ <div class="expense">
+  <div class="expenseleft"><div class="emoji">${emoji(e.category)}</div>
+  <div><b>${safe(e.title)}</b><div style="color:#777d94;font-size:12px">${formatDate(e.date)} • ${safe(e.category)}</div></div></div>
+  <div style="text-align:right"><div class="amount">-${money(e.amount)}</div><button class="delete" onclick="deleteExpense(${e.id})">Delete</button></div>
+ </div>`).join("");
 }
-
-
-/* =========================
-   DELETE
-========================= */
 
 function deleteExpense(id){
-
-    const item =
-        data.expenses.find(e => e.id === id);
-
-    if(!item) return;
-
-    if(!confirm(
-        `Delete ${item.title} (${money(item.amount)})?`
-    )){
-        return;
-    }
-
-    data.expenses =
-        data.expenses.filter(
-            e => e.id !== id
-        );
-
-    saveData();
-    refresh();
-
-    showToast("Expense deleted");
-
+ let e=data.expenses.find(x=>x.id===id);
+ if(e&&confirm("Delete "+e.title+"?")){
+  data.expenses=data.expenses.filter(x=>x.id!==id);save();refresh();toast("Expense deleted");
+ }
 }
 
-
-/* =========================
-   DASHBOARD
-========================= */
-
-function updateDashboard(){
-
-    const today =
-        new Date().toISOString().split("T")[0];
-
-    const now = new Date();
-
-    const month =
-        now.getMonth();
-
-    const year =
-        now.getFullYear();
-
-    const todayAmount =
-        data.expenses
-        .filter(e => e.date === today)
-        .reduce((s,e)=>s+Number(e.amount),0);
-
-    const monthAmount =
-        data.expenses
-        .filter(e => {
-
-            const d = new Date(e.date);
-
-            return d.getMonth() === month &&
-                   d.getFullYear() === year;
-
-        })
-        .reduce((s,e)=>s+Number(e.amount),0);
-
-    document.getElementById("todaySpend")
-        .textContent = money(todayAmount);
-
-    document.getElementById("monthSpend")
-        .textContent = money(monthAmount);
-
-    document.getElementById("totalSpend")
-        .textContent = money(totalExpenses());
-
+function dashboard(){
+ let now=new Date(),today=localDate(now),m=now.getMonth(),y=now.getFullYear();
+ let td=data.expenses.filter(e=>e.date===today).reduce((s,e)=>s+Number(e.amount),0);
+ let mo=data.expenses.filter(e=>{let d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y}).reduce((s,e)=>s+Number(e.amount),0);
+ $("today").textContent=money(td);$("month").textContent=money(mo);$("total").textContent=money(expensesTotal());
 }
 
+/* LOANS */
 
-/* =========================
-   CALENDAR
-========================= */
+function toggleLoan(){$("loanForm").classList.toggle("hidden")}
 
-function changeMonth(direction){
+function addLoan(){
+ let name=$("lname").value.trim(),amount=Number($("lamount").value),remaining=Number($("lremain").value),interest=Number($("linterest").value)||0,emi=Number($("lemi").value),date=$("ldate").value;
+ if(!name)return toast("Enter loan name");
+ if(amount<=0)return toast("Enter total loan");
+ if(remaining<0||remaining>amount)return toast("Check remaining amount");
+ if(emi<=0)return toast("Enter monthly EMI");
 
-    calendarDate.setMonth(
-        calendarDate.getMonth() + direction
-    );
-
-    renderCalendar();
-
+ data.loans.push({id:Date.now(),name,amount,remaining,interest,emi,date});
+ save();
+ ["lname","lamount","lremain","linterest","lemi","ldate"].forEach(x=>$(x).value="");
+ $("loanForm").classList.add("hidden");refresh();toast("Loan added");
 }
 
-function renderCalendar(){
+function renderLoans(){
+ let total=data.loans.reduce((s,l)=>s+Number(l.amount),0);
+ let remain=data.loans.reduce((s,l)=>s+Number(l.remaining),0);
+ let emi=data.loans.reduce((s,l)=>s+Number(l.emi),0);
 
-    const year =
-        calendarDate.getFullYear();
+ $("loanTotal").textContent=money(total);
+ $("loanRemain").textContent=money(remain);
+ $("loanEMITotal").textContent=money(emi);
 
-    const month =
-        calendarDate.getMonth();
+ if(!data.loans.length){
+  $("loanList").innerHTML='<div class="empty">🏦<br><b>No loans added</b><br>Add a loan to start tracking it.</div>';return;
+ }
 
-    const monthName =
-        calendarDate.toLocaleString(
-            "en-US",
-            {month:"long"}
-        );
-
-    document.getElementById("monthTitle")
-        .textContent =
-        `${monthName} ${year}`;
-
-    const firstDay =
-        new Date(year,month,1).getDay();
-
-    const daysInMonth =
-        new Date(year,month+1,0).getDate();
-
-    const previousDays =
-        new Date(year,month,0).getDate();
-
-    const grid =
-        document.getElementById("calendarGrid");
-
-    grid.innerHTML = "";
-
-    let cells = 42;
-
-    for(let i=0;i<cells;i++){
-
-        const dayIndex =
-            i - firstDay + 1;
-
-        let date;
-        let currentMonth = true;
-        let displayDay;
-
-        if(dayIndex < 1){
-
-            displayDay =
-                previousDays + dayIndex;
-
-            date =
-                new Date(
-                    year,
-                    month - 1,
-                    displayDay
-                );
-
-            currentMonth = false;
-
-        }else if(dayIndex > daysInMonth){
-
-            displayDay =
-                dayIndex - daysInMonth;
-
-            date =
-                new Date(
-                    year,
-                    month + 1,
-                    displayDay
-                );
-
-            currentMonth = false;
-
-        }else{
-
-            displayDay = dayIndex;
-
-            date =
-                new Date(
-                    year,
-                    month,
-                    displayDay
-                );
-
-        }
-
-        const dateString =
-            localDateString(date);
-
-        const expenses =
-            data.expenses.filter(
-                e => e.date === dateString
-            );
-
-        const expenseTotal =
-            expenses.reduce(
-                (s,e)=>s+Number(e.amount),
-                0
-            );
-
-        const cell =
-            document.createElement("div");
-
-        cell.className =
-            "calendarDay" +
-            (!currentMonth ? " other" : "");
-
-        const today =
-            new Date();
-
-        if(
-            date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()
-        ){
-            cell.classList.add("today");
-        }
-
-        cell.innerHTML = `
-
-            <div class="dayNumber">
-                ${displayDay}
-            </div>
-
-            ${
-                expenseTotal > 0
-                ?
-                `<div class="dayExpense">
-                    -${money(expenseTotal)}
-                </div>`
-                :
-                ""
-            }
-
-        `;
-
-        cell.onclick = () =>
-            openDay(dateString);
-
-        grid.appendChild(cell);
-
-    }
-
-    const monthExpenses =
-        data.expenses.filter(e => {
-
-            const d = new Date(e.date);
-
-            return d.getMonth() === month &&
-                   d.getFullYear() === year;
-
-        });
-
-    const total =
-        monthExpenses.reduce(
-            (s,e)=>s+Number(e.amount),0
-        );
-
-    document.getElementById("calendarIncome")
-        .textContent = money(data.salary);
-
-    document.getElementById("calendarExpense")
-        .textContent = money(total);
-
-    document.getElementById("calendarTotal")
-        .textContent = money(data.salary - total);
-
+ $("loanList").innerHTML=data.loans.map(l=>{
+  let paid=l.amount-l.remaining;
+  let pct=Math.max(0,Math.min(100,paid/l.amount*100));
+  return `<div class="loanCard">
+   <div class="loanTop"><div><div class="loanName">🏦 ${safe(l.name)}</div><small style="color:#858ba1">${l.interest}% interest</small></div><b>${pct.toFixed(0)}%</b></div>
+   <div class="loanBalance">${money(l.remaining)}</div>
+   <small style="color:#858ba1">remaining balance</small>
+   <div class="progress"><div class="progressbar" style="width:${pct}%"></div></div>
+   <small style="color:#858ba1">${money(paid)} paid of ${money(l.amount)}</small>
+   <div class="loanInfo">
+    <div><small>Total</small><b>${money(l.amount)}</b></div>
+    <div><small>Monthly EMI</small><b>${money(l.emi)}</b></div>
+    <div><small>Next payment</small><b>${l.date||"Not set"}</b></div>
+    <div><small>Interest</small><b>${l.interest}%</b></div>
+   </div>
+   <div class="loanButtons">
+    <button class="pay" onclick="payEMI(${l.id})">💳 Pay EMI</button>
+    <button class="remove" onclick="deleteLoan(${l.id})">Delete</button>
+   </div>
+  </div>`;
+ }).join("");
 }
 
-
-/* =========================
-   DAY MODAL
-========================= */
-
-function openDay(date){
-
-    const expenses =
-        data.expenses.filter(
-            e => e.date === date
-        );
-
-    document.getElementById("dayModalTitle")
-        .textContent =
-        formatDate(date);
-
-    const box =
-        document.getElementById("dayTransactions");
-
-    if(expenses.length === 0){
-
-        box.innerHTML = `
-            <div class="empty">
-                No transactions on this day.
-            </div>
-        `;
-
-    }else{
-
-        box.innerHTML = expenses.map(e => `
-
-            <div class="expenseCard">
-
-                <div class="expenseInfo">
-
-                    <div class="expenseEmoji">
-                        ${categoryEmoji(e.category)}
-                    </div>
-
-                    <div>
-                        <div class="expenseName">
-                            ${escapeHTML(e.title)}
-                        </div>
-
-                        <div class="expenseDate">
-                            ${escapeHTML(e.category)}
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="expenseAmount">
-                    -${money(e.amount)}
-                </div>
-
-            </div>
-
-        `).join("");
-
-    }
-
-    document
-        .getElementById("dayModal")
-        .classList.remove("hidden");
-
+function payEMI(id){
+ let l=data.loans.find(x=>x.id===id);
+ if(!l)return;
+ let amount=Math.min(Number(l.emi),Number(l.remaining));
+ if(amount<=0)return toast("Loan already paid");
+ l.remaining-=amount;
+ save();refresh();toast(money(amount)+" EMI recorded");
 }
 
-function closeDayModal(){
-
-    document
-        .getElementById("dayModal")
-        .classList.add("hidden");
-
+function deleteLoan(id){
+ if(confirm("Delete this loan?")){
+  data.loans=data.loans.filter(x=>x.id!==id);save();refresh();toast("Loan deleted");
+ }
 }
 
+/* CALENDAR */
 
-/* =========================
-   STATS
-========================= */
+function changeMonth(n){calDate.setMonth(calDate.getMonth()+n);calendar()}
 
-function renderStats(){
-
-    const expenses =
-        data.expenses;
-
-    const total =
-        totalExpenses();
-
-    const average =
-        expenses.length
-        ? total / expenses.length
-        : 0;
-
-    const biggest =
-        expenses.length
-        ? Math.max(...expenses.map(e=>Number(e.amount)))
-        : 0;
-
-    document.getElementById("averageSpend")
-        .textContent = money(average);
-
-    document.getElementById("biggestExpense")
-        .textContent = money(biggest);
-
-    document.getElementById("transactionCount")
-        .textContent = expenses.length;
-
-    renderChart();
-
+function calendar(){
+ let y=calDate.getFullYear(),m=calDate.getMonth();
+ $("monthTitle").textContent=calDate.toLocaleString("en-US",{month:"long"})+" "+y;
+ let first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),prev=new Date(y,m,0).getDate(),html="";
+ for(let i=0;i<42;i++){
+  let num=i-first+1,d=new Date(y,m,num),current=num>=1&&num<=days;
+  let ds=localDate(d),sum=data.expenses.filter(e=>e.date===ds).reduce((s,e)=>s+Number(e.amount),0);
+  let cls=current?"day":"day other";
+  if(ds===localDate(new Date()))cls+=" today";
+  html+=`<div class="${cls}" onclick="dayModal('${ds}')"><div>${d.getDate()}</div>${sum?`<div class="dayexp">-${money(sum)}</div>`:""}</div>`;
+ }
+ $("days").innerHTML=html;
+ let month=data.expenses.filter(e=>{let d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y}).reduce((s,e)=>s+Number(e.amount),0);
+ $("cincome").textContent=money(data.salary);$("cexpense").textContent=money(month);$("ctotal").textContent=money(data.salary-month);
 }
 
+function dayModal(date){
+ let arr=data.expenses.filter(e=>e.date===date);
+ $("dayTitle").textContent=formatDate(date);
+ $("dayList").innerHTML=arr.length?arr.map(e=>`<div class="expense"><div class="expenseleft"><div class="emoji">${emoji(e.category)}</div><b>${safe(e.title)}</b></div><div class="amount">-${money(e.amount)}</div></div>`).join(""):'<div class="empty">No transactions.</div>';
+ $("dayModal").classList.remove("hidden");
+}
+function closeDay(){$("dayModal").classList.add("hidden")}
 
-function renderChart(){
+/* STATS */
 
-    const chart =
-        document.getElementById("barChart");
+function stats(){
+ let total=expensesTotal(),big=data.expenses.length?Math.max(...data.expenses.map(e=>Number(e.amount))):0;
+ $("average").textContent=money(data.expenses.length?total/data.expenses.length:0);
+ $("biggest").textContent=money(big);$("count").textContent=data.expenses.length;
 
-    const now =
-        new Date();
-
-    const days = [];
-
-    for(let i=6;i>=0;i--){
-
-        const d =
-            new Date();
-
-        d.setDate(
-            now.getDate() - i
-        );
-
-        days.push(d);
-
-    }
-
-    const values =
-        days.map(d => {
-
-            const date =
-                localDateString(d);
-
-            return data.expenses
-                .filter(e => e.date === date)
-                .reduce(
-                    (s,e)=>s+Number(e.amount),
-                    0
-                );
-
-        });
-
-    const max =
-        Math.max(...values,1);
-
-    chart.innerHTML =
-        days.map((d,i)=>{
-
-            const height =
-                Math.max(
-                    3,
-                    values[i] / max * 200
-                );
-
-            return `
-
-                <div class="barWrap">
-
-                    <div
-                        style="color:#858ba0;font-size:10px;"
-                    >
-                        ${values[i] ? money(values[i]) : ""}
-                    </div>
-
-                    <div
-                        class="bar"
-                        style="height:${height}px"
-                    ></div>
-
-                    <div class="barLabel">
-                        ${d.toLocaleDateString(
-                            "en-US",
-                            {weekday:"short"}
-                        )}
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
-
+ let arr=[];
+ for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);arr.push(d)}
+ let vals=arr.map(d=>data.expenses.filter(e=>e.date===localDate(d)).reduce((s,e)=>s+Number(e.amount),0));
+ let max=Math.max(...vals,1);
+ $("bars").innerHTML=arr.map((d,i)=>`<div class="barwrap"><small style="color:#858ba0;font-size:9px">${vals[i]?money(vals[i]):""}</small><div class="bar" style="height:${Math.max(3,vals[i]/max*190)}px"></div><small style="color:#777d94">${d.toLocaleDateString("en-US",{weekday:"short"})}</small></div>`).join("");
 }
 
-
-/* =========================
-   CAMERA
-========================= */
+/* CAMERA + OCR */
 
 async function startCamera(){
-
-    const status =
-        document.getElementById("scanStatus");
-
-    if(!navigator.mediaDevices ||
-       !navigator.mediaDevices.getUserMedia){
-
-        status.textContent =
-            "Camera is not supported by this browser.";
-
-        return;
-
-    }
-
-    try{
-
-        cameraStream =
-            await navigator.mediaDevices.getUserMedia({
-
-                video:{
-                    facingMode:{
-                        ideal:"environment"
-                    },
-                    width:{
-                        ideal:1280
-                    },
-                    height:{
-                        ideal:720
-                    }
-                },
-
-                audio:false
-
-            });
-
-        const video =
-            document.getElementById("video");
-
-        video.srcObject =
-            cameraStream;
-
-        await video.play();
-
-        status.textContent =
-            "Camera active. Place the receipt inside the frame.";
-
-    }catch(error){
-
-        console.error(error);
-
-        status.textContent =
-            "Camera permission denied or unavailable. Try Upload Receipt instead.";
-
-        showToast(
-            "Camera unavailable — use Upload Receipt"
-        );
-
-    }
-
+ if(!navigator.mediaDevices?.getUserMedia)return toast("Camera not supported");
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+  $("video").srcObject=stream;await $("video").play();$("scanStatus").textContent="Camera active.";
+ }catch(e){$("scanStatus").textContent="Camera unavailable. Use Upload Receipt.";toast("Camera permission unavailable")}
 }
-
 
 function stopCamera(){
-
-    if(cameraStream){
-
-        cameraStream
-            .getTracks()
-            .forEach(track => track.stop());
-
-        cameraStream = null;
-
-    }
-
-    document.getElementById("video")
-        .srcObject = null;
-
-    document.getElementById("scanStatus")
-        .textContent = "Camera stopped.";
-
+ if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+ $("video").srcObject=null;$("scanStatus").textContent="Camera stopped.";
 }
 
-
-/* =========================
-   CAPTURE
-========================= */
-
-async function captureReceipt(){
-
-    const video =
-        document.getElementById("video");
-
-    if(!video.srcObject){
-
-        showToast("Start camera first");
-        return;
-
-    }
-
-    const canvas =
-        document.getElementById("canvas");
-
-    canvas.width =
-        video.videoWidth;
-
-    canvas.height =
-        video.videoHeight;
-
-    const ctx =
-        canvas.getContext("2d");
-
-    ctx.drawImage(
-        video,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    canvas.toBlob(
-        blob => runOCR(blob),
-        "image/jpeg",
-        .92
-    );
-
+function capture(){
+ let v=$("video");
+ if(!v.srcObject)return toast("Start camera first");
+ let c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+ c.toBlob(b=>ocr(b),"image/jpeg",.92);
 }
 
+$("file").addEventListener("change",e=>{if(e.target.files[0])ocr(e.target.files[0])});
 
-/* =========================
-   UPLOAD RECEIPT
-========================= */
-
-document
-    .getElementById("receiptFile")
-    .addEventListener(
-        "change",
-        function(){
-
-            const file =
-                this.files[0];
-
-            if(file){
-
-                runOCR(file);
-
-            }
-
-        }
-    );
-
-
-/* =========================
-   OCR
-========================= */
-
-async function runOCR(image){
-
-    const status =
-        document.getElementById("scanStatus");
-
-    const output =
-        document.getElementById("ocrText");
-
-    status.textContent =
-        "Reading receipt... please wait.";
-
-    output.classList.remove("hidden");
-
-    output.textContent =
-        "OCR is processing...";
-
-    try{
-
-        const result =
-            await Tesseract.recognize(
-                image,
-                "eng",
-                {
-                    logger: message => {
-
-                        if(message.status === "recognizing text"){
-
-                            status.textContent =
-                                "Reading receipt: " +
-                                Math.round(
-                                    message.progress * 100
-                                ) +
-                                "%";
-
-                        }
-
-                    }
-                }
-            );
-
-        const text =
-            result.data.text || "";
-
-        output.textContent =
-            text || "No text detected.";
-
-        const detected =
-            parseReceipt(text);
-
-        document.getElementById("scanTitle")
-            .value = detected.title;
-
-        document.getElementById("scanAmount")
-            .value = detected.amount || "";
-
-        document.getElementById("scanDate")
-            .value = detected.date;
-
-        document
-            .getElementById("scanResult")
-            .classList.remove("hidden");
-
-        status.textContent =
-            "Scan complete. Check the details before saving.";
-
-    }catch(error){
-
-        console.error(error);
-
-        status.textContent =
-            "Could not read this receipt.";
-
-        output.textContent =
-            "OCR failed. Try a clearer image.";
-
-    }
-
+async function ocr(image){
+ $("scanStatus").textContent="Reading receipt...";
+ $("ocr").classList.remove("hidden");$("ocr").textContent="Processing...";
+ try{
+  let r=await Tesseract.recognize(image,"eng",{logger:x=>{if(x.status==="recognizing text")$("scanStatus").textContent="Reading "+Math.round(x.progress*100)+"%"}})
+  let text=r.data.text||"";$("ocr").textContent=text||"No text detected.";
+  let p=parseReceipt(text);
+  $("stitle").value=p.title;$("samount").value=p.amount||"";$("sdate").value=p.date;
+  $("scanForm").classList.remove("hidden");$("scanStatus").textContent="Scan complete. Check details.";
+ }catch(e){$("ocr").textContent="OCR failed. Try a clearer image.";$("scanStatus").textContent="Could not read receipt."}
 }
-
-
-/* =========================
-   RECEIPT PARSER
-========================= */
 
 function parseReceipt(text){
-
-    const lines =
-        text
-        .split("\n")
-        .map(x => x.trim())
-        .filter(Boolean);
-
-    let amount = null;
-
-    const amountPatterns = [
-
-        /(?:total|amount|grand total|net total)[^\d₹]*₹?\s*([\d,]+(?:\.\d{1,2})?)/i,
-
-        /₹\s*([\d,]+(?:\.\d{1,2})?)/,
-
-        /\b(\d{2,6}(?:\.\d{1,2})?)\b/
-
-    ];
-
-    for(const pattern of amountPatterns){
-
-        const match =
-            text.match(pattern);
-
-        if(match){
-
-            amount =
-                Number(
-                    match[1]
-                    .replace(/,/g,"")
-                );
-
-            if(amount > 0){
-                break;
-            }
-
-        }
-
-    }
-
-    let title =
-        "Scanned Expense";
-
-    const badWords =
-        /^(total|subtotal|amount|tax|gst|cash|change|date|invoice|bill|receipt)$/i;
-
-    for(const line of lines){
-
-        if(
-            line.length >= 3 &&
-            line.length <= 40 &&
-            !badWords.test(line) &&
-            !/^\d+$/.test(line) &&
-            !/₹?\s*\d/.test(line)
-        ){
-
-            title = line;
-            break;
-
-        }
-
-    }
-
-    let date =
-        new Date()
-        .toISOString()
-        .split("T")[0];
-
-    const dateMatch =
-        text.match(
-            /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/
-        );
-
-    if(dateMatch){
-
-        let day =
-            dateMatch[1].padStart(2,"0");
-
-        let month =
-            dateMatch[2].padStart(2,"0");
-
-        let year =
-            dateMatch[3];
-
-        if(year.length === 2)
-            year = "20" + year;
-
-        date =
-            `${year}-${month}-${day}`;
-
-    }
-
-    return {
-        title,
-        amount,
-        date
-    };
-
+ let amount=null;
+ let patterns=[/(?:total|amount|grand total|net total)[^\d₹]*₹?\s*([\d,]+(?:\.\d{1,2})?)/i,/₹\s*([\d,]+(?:\.\d{1,2})?)/,/\b(\d{2,6}(?:\.\d{1,2})?)\b/];
+ for(let p of patterns){let m=text.match(p);if(m){amount=Number(m[1].replace(/,/g,""));if(amount>0)break}}
+ let title="Scanned Expense";
+ for(let line of text.split("\n").map(x=>x.trim()).filter(Boolean)){
+  if(line.length>=3&&line.length<=40&&!/^(total|subtotal|amount|tax|gst|cash|change|date|invoice|bill|receipt)$/i.test(line)&&!/\d/.test(line)){title=line;break}
+ }
+ let date=localDate(new Date()),m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+ if(m){let y=m[3].length===2?"20"+m[3]:m[3];date=`${y}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`}
+ return {title,amount,date};
 }
 
-
-/* =========================
-   SAVE SCANNED EXPENSE
-========================= */
-
-function saveScannedExpense(){
-
-    const title =
-        document.getElementById("scanTitle")
-            .value.trim();
-
-    const amount =
-        Number(
-            document.getElementById("scanAmount")
-                .value
-        );
-
-    const date =
-        document.getElementById("scanDate")
-            .value;
-
-    const category =
-        document.getElementById("scanCategory")
-            .value;
-
-    if(!title){
-
-        showToast("Enter a title");
-        return;
-
-    }
-
-    if(!amount || amount <= 0){
-
-        showToast("Check the detected amount");
-        return;
-
-    }
-
-    data.expenses.push({
-
-        id:Date.now(),
-
-        title,
-        amount,
-        date,
-        category
-
-    });
-
-    saveData();
-
-    document
-        .getElementById("scanResult")
-        .classList.add("hidden");
-
-    document
-        .getElementById("ocrText")
-        .classList.add("hidden");
-
-    refresh();
-
-    showToast(
-        money(amount) +
-        " deducted from balance"
-    );
-
+function saveScan(){
+ let title=$("stitle").value.trim(),amount=Number($("samount").value),date=$("sdate").value;
+ if(!title||amount<=0||!date)return toast("Check scanned details");
+ data.expenses.push({id:Date.now(),title,amount,date,category:$("scat").value});
+ save();$("scanForm").classList.add("hidden");$("ocr").classList.add("hidden");refresh();toast(money(amount)+" deducted from balance");
 }
 
+/* HELPERS */
 
-/* =========================
-   HELPERS
-========================= */
-
-function categoryEmoji(category){
-
-    const map = {
-
-        Food:"🍔",
-        Travel:"🚗",
-        Shopping:"🛍️",
-        Bills:"💡",
-        Education:"📚",
-        Health:"❤️",
-        Entertainment:"🎮",
-        Other:"💰"
-
-    };
-
-    return map[category] || "💰";
-
+function localDate(d){
+ let y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+ return `${y}-${m}-${day}`;
 }
+function formatDate(x){return new Date(x+"T00:00:00").toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}
+function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2500)}
 
-
-function formatDate(date){
-
-    const d =
-        new Date(date + "T00:00:00");
-
-    return d.toLocaleDateString(
-        "en-IN",
-        {
-            day:"numeric",
-            month:"short",
-            year:"numeric"
-        }
-    );
-
-}
-
-
-function localDateString(date){
-
-    const y =
-        date.getFullYear();
-
-    const m =
-        String(date.getMonth()+1)
-        .padStart(2,"0");
-
-    const d =
-        String(date.getDate())
-        .padStart(2,"0");
-
-    return `${y}-${m}-${d}`;
-
-}
-
-
-function escapeHTML(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-function showToast(message){
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent =
-        message;
-
-    toast.classList.add("show");
-
-    setTimeout(
-        () => toast.classList.remove("show"),
-        2500
-    );
-
-}
-
-
-/* =========================
-   INITIAL SETUP
-========================= */
-
-document.getElementById("expenseDate")
-    .value =
-    new Date()
-    .toISOString()
-    .split("T")[0];
-
-
-/*
-   Do NOT automatically start the camera.
-   This prevents the black-camera problem
-   and lets the browser request permission
-   only after the user taps START CAMERA.
-*/
-
+$("edate").value=localDate(new Date());
 </script>
-
 </body>
 </html>
