@@ -55,7 +55,23 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 .bars{height:250px;display:flex;align-items:end;gap:10px;margin-top:18px;padding:15px;background:#111421;border-radius:20px}.barwrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:6px}.bar{width:70%;max-width:45px;background:linear-gradient(#7662ff,#438cf5);border-radius:8px 8px 2px 2px;min-height:3px}
 .modal{position:fixed;inset:0;z-index:5000;background:#000b;display:flex;align-items:center;justify-content:center;padding:20px}.modalbox{width:100%;max-width:500px;background:#121522;border:1px solid #34384e;border-radius:24px;padding:23px}.modalhead{display:flex;justify-content:space-between}.close{width:40px;height:40px;border:0;background:#252a3c;color:white;border-radius:10px;font-size:20px}
 .toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,120px);background:#202437;border:1px solid #3b4058;padding:13px 20px;border-radius:14px;z-index:10000;transition:.3s}.toast.show{transform:translate(-50%,0)}
-@media(max-width:700px){.app{padding:23px 13px 70px}header{align-items:flex-start}.robot{font-size:60px}.grid,.stats,.loanSummary{grid-template-columns:1fr}.balance{padding:25px}.salary{align-items:flex-start}.day{min-height:65px}.loanInfo{font-size:13px}}
+
+/* REMINDERS - NEW FEATURE */
+.reminderCard{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px;background:#111421;border:1px solid #292d40;border-radius:20px}
+.reminderLeft{display:flex;align-items:center;gap:14px}
+.reminderIcon{width:50px;height:50px;border-radius:15px;background:#29233f;display:flex;align-items:center;justify-content:center;font-size:23px}
+.reminderTitle{font-weight:800}
+.reminderDate{color:#858ba1;font-size:12px;margin-top:5px}
+.reminderAmount{font-size:18px;font-weight:900;color:#63d5a8}
+.reminderDue{color:#ff7777;font-size:11px;font-weight:800;margin-top:4px}
+.reminderDone{opacity:.45}
+.reminderDone .reminderTitle{text-decoration:line-through}
+.reminderButtons{display:flex;gap:7px;margin-top:7px}
+.reminderButtons button{padding:7px 10px;border:0;border-radius:9px;font-size:11px}
+.doneBtn{background:#1c805d;color:white}
+.reminderDelete{background:#321b23;color:#ff8b9b}
+
+@media(max-width:700px){.app{padding:23px 13px 70px}header{align-items:flex-start}.robot{font-size:60px}.grid,.stats,.loanSummary{grid-template-columns:1fr}.balance{padding:25px}.salary{align-items:flex-start}.day{min-height:65px}.loanInfo{font-size:13px}.reminderCard{align-items:flex-start;flex-direction:column}.reminderButtons{flex-wrap:wrap}}
 </style>
 </head>
 
@@ -104,6 +120,7 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 <button id="nCalendar" onclick="section('calendar')">📅 Calendar</button>
 <button id="nStats" onclick="section('stats')">📊 Stats</button>
 <button id="nScanner" onclick="section('scanner')">📷 Scanner</button>
+<button id="nReminders" onclick="section('reminders')">🔔 Reminders</button>
 </nav>
 
 <section id="dashboard" class="section">
@@ -211,6 +228,66 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 </div>
 </section>
 
+<!-- REMINDERS - NEW SECTION -->
+<section id="reminders" class="section hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+<div>
+<div class="smalllabel">PAYMENT ALERTS</div>
+<h2>Reminders 🔔</h2>
+</div>
+<button class="btn" onclick="toggleReminder()">+ ADD REMINDER</button>
+</div>
+
+<div class="stats">
+<div class="card"><span>UPCOMING</span><strong id="upcomingReminders">0</strong></div>
+<div class="card"><span>DUE TODAY</span><strong id="todayReminders">0</strong></div>
+<div class="card"><span>COMPLETED</span><strong id="completedReminders">0</strong></div>
+</div>
+
+<div id="reminderForm" class="form hidden">
+<div class="grid">
+<div class="field">
+<label>Reminder title</label>
+<input id="rtitle" placeholder="Electricity Bill">
+</div>
+
+<div class="field">
+<label>Amount</label>
+<input id="ramount" type="number" placeholder="₹">
+</div>
+
+<div class="field">
+<label>Due date</label>
+<input id="rdate" type="date">
+</div>
+
+<div class="field">
+<label>Reminder time</label>
+<input id="rtime" type="time">
+</div>
+
+<div class="field">
+<label>Type</label>
+<select id="rtype">
+<option>💡 Bill</option>
+<option>🏦 EMI</option>
+<option>🏠 Rent</option>
+<option>📱 Subscription</option>
+<option>💳 Credit Card</option>
+<option>📝 Other</option>
+</select>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn" onclick="addReminder()">SAVE REMINDER</button>
+<button class="secondary" onclick="toggleReminder()">CANCEL</button>
+</div>
+</div>
+
+<div id="reminderList" class="list"></div>
+</section>
+
 </main>
 
 <div id="salaryModal" class="modal hidden">
@@ -234,10 +311,11 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 const PASSWORD="7890";
 
 let data=JSON.parse(localStorage.getItem("financeManagerData")||"null")||{
- salary:0,expenses:[],loans:[]
+ salary:0,expenses:[],loans:[],reminders:[]
 };
 
 if(!Array.isArray(data.loans))data.loans=[];
+if(!Array.isArray(data.reminders))data.reminders=[];
 
 let calDate=new Date(),stream=null;
 
@@ -249,6 +327,7 @@ function unlock(){
   $("lock").classList.add("hidden");
   $("app").classList.remove("hidden");
   refresh();
+  checkReminders();
  }else{
   $("error").textContent="Incorrect password";
   $("password").value="";
@@ -264,22 +343,37 @@ function balance(){return Number(data.salary)-expensesTotal()}
 function refresh(){
  $("salary").textContent=money(data.salary);
  $("balance").textContent=money(balance());
- renderExpenses();dashboard();renderLoans();calendar();stats();
+ renderExpenses();dashboard();renderLoans();calendar();stats();renderReminders();
 }
 
 function section(id){
- ["dashboard","expenses","loans","calendar","stats","scanner"].forEach(x=>$(x).classList.add("hidden"));
+ ["dashboard","expenses","loans","calendar","stats","scanner","reminders"].forEach(x=>$(x).classList.add("hidden"));
  $(id).classList.remove("hidden");
+
  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
- const map={dashboard:"nDashboard",expenses:"nExpenses",loans:"nLoans",calendar:"nCalendar",stats:"nStats",scanner:"nScanner"};
+
+ const map={
+  dashboard:"nDashboard",
+  expenses:"nExpenses",
+  loans:"nLoans",
+  calendar:"nCalendar",
+  stats:"nStats",
+  scanner:"nScanner",
+  reminders:"nReminders"
+ };
+
  $(map[id])?.classList.add("active");
+
+ if(id==="reminders")checkReminders();
 }
 
 function salaryModal(){
  $("salaryInput").value=data.salary||"";
  $("salaryModal").classList.remove("hidden");
 }
+
 function closeSalary(){$("salaryModal").classList.add("hidden")}
+
 function saveSalary(){
  let n=Number($("salaryInput").value);
  if(n<0||isNaN(n))return toast("Enter a valid salary");
@@ -293,65 +387,154 @@ function toggleExpense(){
 }
 
 function addExpense(){
- let title=$("etitle").value.trim(),amount=Number($("eamount").value),date=$("edate").value,cat=$("ecat").value;
+ let title=$("etitle").value.trim(),
+ amount=Number($("eamount").value),
+ date=$("edate").value,
+ cat=$("ecat").value;
+
  if(!title)return toast("Enter expense title");
  if(amount<=0)return toast("Enter a valid amount");
  if(!date)return toast("Select date");
- data.expenses.push({id:Date.now(),title,amount,date,category:cat});
- save();$("etitle").value="";$("eamount").value="";$("expenseForm").classList.add("hidden");refresh();
+
+ data.expenses.push({
+  id:Date.now(),
+  title,
+  amount,
+  date,
+  category:cat
+ });
+
+ save();
+
+ $("etitle").value="";
+ $("eamount").value="";
+ $("expenseForm").classList.add("hidden");
+
+ refresh();
  toast(money(amount)+" deducted from balance");
 }
 
 function emoji(c){
- return {Food:"🍔",Travel:"🚗",Shopping:"🛍️",Bills:"💡",Education:"📚",Health:"❤️",Entertainment:"🎮",Other:"💰"}[c]||"💰";
+ return {
+  Food:"🍔",
+  Travel:"🚗",
+  Shopping:"🛍️",
+  Bills:"💡",
+  Education:"📚",
+  Health:"❤️",
+  Entertainment:"🎮",
+  Other:"💰"
+ }[c]||"💰";
 }
 
 function safe(x){
- return String(x).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+ return String(x).replace(/[&<>"']/g,m=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#039;"
+ }[m]));
 }
 
 function renderExpenses(){
  let list=$("expenseList");
+
  if(!data.expenses.length){
-  list.innerHTML='<div class="empty">💸<br><b>No expenses yet</b><br>Add your first expense.</div>';return;
+  list.innerHTML='<div class="empty">💸<br><b>No expenses yet</b><br>Add your first expense.</div>';
+  return;
  }
- list.innerHTML=[...data.expenses].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>`
+
+ list.innerHTML=[...data.expenses]
+ .sort((a,b)=>new Date(b.date)-new Date(a.date))
+ .map(e=>`
  <div class="expense">
-  <div class="expenseleft"><div class="emoji">${emoji(e.category)}</div>
-  <div><b>${safe(e.title)}</b><div style="color:#777d94;font-size:12px">${formatDate(e.date)} • ${safe(e.category)}</div></div></div>
-  <div style="text-align:right"><div class="amount">-${money(e.amount)}</div><button class="delete" onclick="deleteExpense(${e.id})">Delete</button></div>
+  <div class="expenseleft">
+   <div class="emoji">${emoji(e.category)}</div>
+   <div>
+    <b>${safe(e.title)}</b>
+    <div style="color:#777d94;font-size:12px">
+     ${formatDate(e.date)} • ${safe(e.category)}
+    </div>
+   </div>
+  </div>
+  <div style="text-align:right">
+   <div class="amount">-${money(e.amount)}</div>
+   <button class="delete" onclick="deleteExpense(${e.id})">Delete</button>
+  </div>
  </div>`).join("");
 }
 
 function deleteExpense(id){
  let e=data.expenses.find(x=>x.id===id);
+
  if(e&&confirm("Delete "+e.title+"?")){
-  data.expenses=data.expenses.filter(x=>x.id!==id);save();refresh();toast("Expense deleted");
+  data.expenses=data.expenses.filter(x=>x.id!==id);
+  save();
+  refresh();
+  toast("Expense deleted");
  }
 }
 
 function dashboard(){
- let now=new Date(),today=localDate(now),m=now.getMonth(),y=now.getFullYear();
- let td=data.expenses.filter(e=>e.date===today).reduce((s,e)=>s+Number(e.amount),0);
- let mo=data.expenses.filter(e=>{let d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y}).reduce((s,e)=>s+Number(e.amount),0);
- $("today").textContent=money(td);$("month").textContent=money(mo);$("total").textContent=money(expensesTotal());
+ let now=new Date(),
+ today=localDate(now),
+ m=now.getMonth(),
+ y=now.getFullYear();
+
+ let td=data.expenses
+ .filter(e=>e.date===today)
+ .reduce((s,e)=>s+Number(e.amount),0);
+
+ let mo=data.expenses
+ .filter(e=>{
+  let d=new Date(e.date);
+  return d.getMonth()===m&&d.getFullYear()===y;
+ })
+ .reduce((s,e)=>s+Number(e.amount),0);
+
+ $("today").textContent=money(td);
+ $("month").textContent=money(mo);
+ $("total").textContent=money(expensesTotal());
 }
 
 /* LOANS */
 
-function toggleLoan(){$("loanForm").classList.toggle("hidden")}
+function toggleLoan(){
+ $("loanForm").classList.toggle("hidden")
+}
 
 function addLoan(){
- let name=$("lname").value.trim(),amount=Number($("lamount").value),remaining=Number($("lremain").value),interest=Number($("linterest").value)||0,emi=Number($("lemi").value),date=$("ldate").value;
+ let name=$("lname").value.trim(),
+ amount=Number($("lamount").value),
+ remaining=Number($("lremain").value),
+ interest=Number($("linterest").value)||0,
+ emi=Number($("lemi").value),
+ date=$("ldate").value;
+
  if(!name)return toast("Enter loan name");
  if(amount<=0)return toast("Enter total loan");
  if(remaining<0||remaining>amount)return toast("Check remaining amount");
  if(emi<=0)return toast("Enter monthly EMI");
 
- data.loans.push({id:Date.now(),name,amount,remaining,interest,emi,date});
+ data.loans.push({
+  id:Date.now(),
+  name,
+  amount,
+  remaining,
+  interest,
+  emi,
+  date
+ });
+
  save();
- ["lname","lamount","lremain","linterest","lemi","ldate"].forEach(x=>$(x).value="");
- $("loanForm").classList.add("hidden");refresh();toast("Loan added");
+
+ ["lname","lamount","lremain","linterest","lemi","ldate"]
+ .forEach(x=>$(x).value="");
+
+ $("loanForm").classList.add("hidden");
+ refresh();
+ toast("Loan added");
 }
 
 function renderLoans(){
@@ -364,24 +547,39 @@ function renderLoans(){
  $("loanEMITotal").textContent=money(emi);
 
  if(!data.loans.length){
-  $("loanList").innerHTML='<div class="empty">🏦<br><b>No loans added</b><br>Add a loan to start tracking it.</div>';return;
+  $("loanList").innerHTML='<div class="empty">🏦<br><b>No loans added</b><br>Add a loan to start tracking it.</div>';
+  return;
  }
 
  $("loanList").innerHTML=data.loans.map(l=>{
   let paid=l.amount-l.remaining;
   let pct=Math.max(0,Math.min(100,paid/l.amount*100));
+
   return `<div class="loanCard">
-   <div class="loanTop"><div><div class="loanName">🏦 ${safe(l.name)}</div><small style="color:#858ba1">${l.interest}% interest</small></div><b>${pct.toFixed(0)}%</b></div>
+   <div class="loanTop">
+    <div>
+     <div class="loanName">🏦 ${safe(l.name)}</div>
+     <small style="color:#858ba1">${l.interest}% interest</small>
+    </div>
+    <b>${pct.toFixed(0)}%</b>
+   </div>
+
    <div class="loanBalance">${money(l.remaining)}</div>
    <small style="color:#858ba1">remaining balance</small>
-   <div class="progress"><div class="progressbar" style="width:${pct}%"></div></div>
+
+   <div class="progress">
+    <div class="progressbar" style="width:${pct}%"></div>
+   </div>
+
    <small style="color:#858ba1">${money(paid)} paid of ${money(l.amount)}</small>
+
    <div class="loanInfo">
     <div><small>Total</small><b>${money(l.amount)}</b></div>
     <div><small>Monthly EMI</small><b>${money(l.emi)}</b></div>
     <div><small>Next payment</small><b>${l.date||"Not set"}</b></div>
     <div><small>Interest</small><b>${l.interest}%</b></div>
    </div>
+
    <div class="loanButtons">
     <button class="pay" onclick="payEMI(${l.id})">💳 Pay EMI</button>
     <button class="remove" onclick="deleteLoan(${l.id})">Delete</button>
@@ -393,80 +591,203 @@ function renderLoans(){
 function payEMI(id){
  let l=data.loans.find(x=>x.id===id);
  if(!l)return;
+
  let amount=Math.min(Number(l.emi),Number(l.remaining));
+
  if(amount<=0)return toast("Loan already paid");
+
  l.remaining-=amount;
- save();refresh();toast(money(amount)+" EMI recorded");
+
+ save();
+ refresh();
+ toast(money(amount)+" EMI recorded");
 }
 
 function deleteLoan(id){
  if(confirm("Delete this loan?")){
-  data.loans=data.loans.filter(x=>x.id!==id);save();refresh();toast("Loan deleted");
+  data.loans=data.loans.filter(x=>x.id!==id);
+  save();
+  refresh();
+  toast("Loan deleted");
  }
 }
 
 /* CALENDAR */
 
-function changeMonth(n){calDate.setMonth(calDate.getMonth()+n);calendar()}
+function changeMonth(n){
+ calDate.setMonth(calDate.getMonth()+n);
+ calendar()
+}
 
 function calendar(){
- let y=calDate.getFullYear(),m=calDate.getMonth();
- $("monthTitle").textContent=calDate.toLocaleString("en-US",{month:"long"})+" "+y;
- let first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),prev=new Date(y,m,0).getDate(),html="";
+ let y=calDate.getFullYear(),
+ m=calDate.getMonth();
+
+ $("monthTitle").textContent=
+ calDate.toLocaleString("en-US",{month:"long"})+" "+y;
+
+ let first=new Date(y,m,1).getDay(),
+ days=new Date(y,m+1,0).getDate(),
+ html="";
+
  for(let i=0;i<42;i++){
-  let num=i-first+1,d=new Date(y,m,num),current=num>=1&&num<=days;
-  let ds=localDate(d),sum=data.expenses.filter(e=>e.date===ds).reduce((s,e)=>s+Number(e.amount),0);
+  let num=i-first+1,
+  d=new Date(y,m,num),
+  current=num>=1&&num<=days;
+
+  let ds=localDate(d);
+
+  let sum=data.expenses
+  .filter(e=>e.date===ds)
+  .reduce((s,e)=>s+Number(e.amount),0);
+
+  let reminderCount=data.reminders
+  .filter(r=>r.date===ds&&!r.completed)
+  .length;
+
   let cls=current?"day":"day other";
+
   if(ds===localDate(new Date()))cls+=" today";
-  html+=`<div class="${cls}" onclick="dayModal('${ds}')"><div>${d.getDate()}</div>${sum?`<div class="dayexp">-${money(sum)}</div>`:""}</div>`;
+
+  html+=`
+  <div class="${cls}" onclick="dayModal('${ds}')">
+   <div>${d.getDate()}</div>
+   ${sum?`<div class="dayexp">-${money(sum)}</div>`:""}
+   ${reminderCount?`<div style="color:#ffd166;font-size:10px;font-weight:800;margin-top:5px">🔔 ${reminderCount}</div>`:""}
+  </div>`;
  }
+
  $("days").innerHTML=html;
- let month=data.expenses.filter(e=>{let d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y}).reduce((s,e)=>s+Number(e.amount),0);
- $("cincome").textContent=money(data.salary);$("cexpense").textContent=money(month);$("ctotal").textContent=money(data.salary-month);
+
+ let month=data.expenses
+ .filter(e=>{
+  let d=new Date(e.date);
+  return d.getMonth()===m&&d.getFullYear()===y;
+ })
+ .reduce((s,e)=>s+Number(e.amount),0);
+
+ $("cincome").textContent=money(data.salary);
+ $("cexpense").textContent=money(month);
+ $("ctotal").textContent=money(data.salary-month);
 }
 
 function dayModal(date){
  let arr=data.expenses.filter(e=>e.date===date);
+ let reminders=data.reminders.filter(r=>r.date===date);
+
  $("dayTitle").textContent=formatDate(date);
- $("dayList").innerHTML=arr.length?arr.map(e=>`<div class="expense"><div class="expenseleft"><div class="emoji">${emoji(e.category)}</div><b>${safe(e.title)}</b></div><div class="amount">-${money(e.amount)}</div></div>`).join(""):'<div class="empty">No transactions.</div>';
+
+ let expenseHTML=arr.length
+ ?arr.map(e=>`
+ <div class="expense">
+  <div class="expenseleft">
+   <div class="emoji">${emoji(e.category)}</div>
+   <b>${safe(e.title)}</b>
+  </div>
+  <div class="amount">-${money(e.amount)}</div>
+ </div>`).join("")
+ :'<div class="empty">No expenses.</div>';
+
+ let reminderHTML=reminders.length
+ ?reminders.map(r=>`
+ <div class="reminderCard ${r.completed?"reminderDone":""}">
+  <div class="reminderLeft">
+   <div class="reminderIcon">🔔</div>
+   <div>
+    <div class="reminderTitle">${safe(r.title)}</div>
+    <div class="reminderDate">${r.time||"No time"} • ${safe(r.type)}</div>
+   </div>
+  </div>
+  <div>
+   <div class="reminderAmount">${r.amount?money(r.amount):""}</div>
+   <div class="reminderDue">${r.completed?"COMPLETED":"REMINDER"}</div>
+  </div>
+ </div>`).join("")
+ :'<div class="empty">No reminders.</div>';
+
+ $("dayList").innerHTML=
+ '<div style="color:#858ba1;font-size:12px;letter-spacing:2px">EXPENSES</div>'+
+ expenseHTML+
+ '<div style="color:#858ba1;font-size:12px;letter-spacing:2px;margin-top:15px">REMINDERS</div>'+
+ reminderHTML;
+
  $("dayModal").classList.remove("hidden");
 }
-function closeDay(){$("dayModal").classList.add("hidden")}
+
+function closeDay(){
+ $("dayModal").classList.add("hidden")
+}
 
 /* STATS */
 
 function stats(){
- let total=expensesTotal(),big=data.expenses.length?Math.max(...data.expenses.map(e=>Number(e.amount))):0;
- $("average").textContent=money(data.expenses.length?total/data.expenses.length:0);
- $("biggest").textContent=money(big);$("count").textContent=data.expenses.length;
+ let total=expensesTotal(),
+ big=data.expenses.length
+ ?Math.max(...data.expenses.map(e=>Number(e.amount)))
+ :0;
+
+ $("average").textContent=
+ money(data.expenses.length?total/data.expenses.length:0);
+
+ $("biggest").textContent=money(big);
+ $("count").textContent=data.expenses.length;
 
  let arr=[];
- for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);arr.push(d)}
- let vals=arr.map(d=>data.expenses.filter(e=>e.date===localDate(d)).reduce((s,e)=>s+Number(e.amount),0));
+
+ for(let i=6;i>=0;i--){
+  let d=new Date();
+  d.setDate(d.getDate()-i);
+  arr.push(d)
+ }
+
+ let vals=arr.map(d=>
+  data.expenses
+  .filter(e=>e.date===localDate(d))
+  .reduce((s,e)=>s+Number(e.amount),0)
+ );
+
  let max=Math.max(...vals,1);
- $("bars").innerHTML=arr.map((d,i)=>`<div class="barwrap"><small style="color:#858ba0;font-size:9px">${vals[i]?money(vals[i]):""}</small><div class="bar" style="height:${Math.max(3,vals[i]/max*190)}px"></div><small style="color:#777d94">${d.toLocaleDateString("en-US",{weekday:"short"})}</small></div>`).join("");
+
+ $("bars").innerHTML=arr.map((d,i)=>`
+ <div class="barwrap">
+  <small style="color:#858ba0;font-size:9px">
+   ${vals[i]?money(vals[i]):""}
+  </small>
+  <div class="bar" style="height:${Math.max(3,vals[i]/max*190)}px"></div>
+  <small style="color:#777d94">
+   ${d.toLocaleDateString("en-US",{weekday:"short"})}
+  </small>
+ </div>`).join("");
 }
 
 /* CAMERA + OCR */
 
 async function startCamera(){
- if(!navigator.mediaDevices?.getUserMedia)return toast("Camera not supported");
+ if(!navigator.mediaDevices?.getUserMedia)
+  return toast("Camera not supported");
+
  try{
-  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+  stream=await navigator.mediaDevices.getUserMedia({
+   video:{facingMode:{ideal:"environment"}},
+   audio:false
+  });
+
   $("video").srcObject=stream;
   await $("video").play();
   $("scanStatus").textContent="Camera active.";
+
  }catch(e){
   $("scanStatus").textContent="Camera unavailable. Use Upload Receipt.";
-  toast("Camera permission unavailable");
+  toast("Camera permission unavailable")
  }
 }
 
 function stopCamera(){
  if(stream){
   stream.getTracks().forEach(t=>t.stop());
-  stream=null;
+  stream=null
  }
+
  $("video").srcObject=null;
  $("scanStatus").textContent="Camera stopped.";
 }
@@ -474,8 +795,7 @@ function stopCamera(){
 function capture(){
  let v=$("video");
 
- if(!v.srcObject)
-  return toast("Start camera first");
+ if(!v.srcObject)return toast("Start camera first");
 
  let c=document.createElement("canvas");
  c.width=v.videoWidth;
@@ -490,42 +810,20 @@ $("file").addEventListener("change",e=>{
  if(e.target.files[0])ocr(e.target.files[0])
 });
 
-
-/*
-========================================================
-NEW FEATURE
-========================================================
-
-After scanning:
-
-1. OCR reads the receipt.
-2. Amount is detected.
-3. Date is detected.
-4. Expense is automatically saved.
-5. Calendar automatically receives the expense.
-
-The existing calendar uses data.expenses, so no separate
-calendar database is required.
-========================================================
-*/
-
 async function ocr(image){
-
  $("scanStatus").textContent="Reading receipt...";
  $("ocr").classList.remove("hidden");
  $("ocr").textContent="Processing...";
 
  try{
-
   let r=await Tesseract.recognize(
    image,
    "eng",
    {
     logger:x=>{
-     if(x.status==="recognizing text"){
+     if(x.status==="recognizing text")
       $("scanStatus").textContent=
-       "Reading "+Math.round(x.progress*100)+"%";
-     }
+      "Reading "+Math.round(x.progress*100)+"%"
     }
    }
   );
@@ -536,212 +834,72 @@ async function ocr(image){
 
   let p=parseReceipt(text);
 
-  /*
-  Fill the scanner information exactly like before.
-  */
   $("stitle").value=p.title;
   $("samount").value=p.amount||"";
   $("sdate").value=p.date;
 
   $("scanForm").classList.remove("hidden");
-
-  /*
-  ======================================================
-  AUTOMATIC CALENDAR FEATURE
-  ======================================================
-
-  If amount was successfully detected, the scanned bill
-  is automatically saved as an expense.
-
-  Because the date is saved with the expense, the existing
-  calendar automatically shows it on that date.
-  ======================================================
-  */
-
-  if(p.amount && p.amount>0){
-
-   let category=detectCategory(
-    text,
-    p.title
-   );
-
-   data.expenses.push({
-    id:Date.now(),
-    title:p.title,
-    amount:Number(p.amount),
-    date:p.date,
-    category:category
-   });
-
-   save();
-
-   /*
-   Refresh everything:
-   Dashboard
-   Expenses
-   Calendar
-   Stats
-   Balance
-   */
-   refresh();
-
-   $("scanStatus").textContent=
-    "✅ Bill scanned and automatically added to Calendar.";
-
-   toast(
-    money(p.amount)+
-    " added to Calendar on "+
-    formatDate(p.date)
-   );
-
-  }else{
-
-   $("scanStatus").textContent=
-    "Scan complete. Amount not detected. Check details.";
-
-  }
+  $("scanStatus").textContent="Scan complete. Check details.";
 
  }catch(e){
-
-  $("ocr").textContent=
-   "OCR failed. Try a clearer image.";
-
-  $("scanStatus").textContent=
-   "Could not read receipt.";
-
+  $("ocr").textContent="OCR failed. Try a clearer image.";
+  $("scanStatus").textContent="Could not read receipt."
  }
-
 }
-
-
-/*
-Detect category automatically from receipt text.
-*/
-function detectCategory(text,title){
-
- let t=(text+" "+title).toLowerCase();
-
- if(
-  /restaurant|food|cafe|coffee|pizza|burger|restaurant|bakery|swiggy|zomato|grocery|mart|supermarket/.test(t)
- )return "Food";
-
- if(
-  /uber|ola|taxi|cab|bus|metro|fuel|petrol|diesel|transport|parking/.test(t)
- )return "Travel";
-
- if(
-  /amazon|flipkart|shopping|mall|store|clothing|fashion/.test(t)
- )return "Shopping";
-
- if(
-  /electricity|water bill|mobile bill|internet|recharge|utility/.test(t)
- )return "Bills";
-
- if(
-  /school|college|education|book|books|stationery|tuition|fee/.test(t)
- )return "Education";
-
- if(
-  /hospital|pharmacy|medical|medicine|clinic|health/.test(t)
- )return "Health";
-
- if(
-  /movie|cinema|game|gaming|entertainment/.test(t)
- )return "Entertainment";
-
- return "Other";
-}
-
 
 function parseReceipt(text){
-
  let amount=null;
 
  let patterns=[
-  /(?:grand\s*total|total\s*amount|net\s*amount|amount\s*payable|amount\s*paid|total|amount)[^\d₹]*₹?\s*([\d,]+(?:\.\d{1,2})?)/i,
-
+  /(?:total|amount|grand total|net total)[^\d₹]*₹?\s*([\d,]+(?:\.\d{1,2})?)/i,
   /₹\s*([\d,]+(?:\.\d{1,2})?)/,
-
   /\b(\d{2,6}(?:\.\d{1,2})?)\b/
  ];
 
  for(let p of patterns){
-
   let m=text.match(p);
 
   if(m){
-
-   amount=Number(
-    m[1].replace(/,/g,"")
-   );
-
-   if(amount>0)break;
-
+   amount=Number(m[1].replace(/,/g,""));
+   if(amount>0)break
   }
  }
 
  let title="Scanned Expense";
 
- for(
-  let line of text
-   .split("\n")
-   .map(x=>x.trim())
-   .filter(Boolean)
- ){
+ for(let line of text
+ .split("\n")
+ .map(x=>x.trim())
+ .filter(Boolean)){
 
   if(
-   line.length>=3 &&
-   line.length<=40 &&
-   !/^(total|subtotal|amount|tax|gst|cash|change|date|invoice|bill|receipt)$/i.test(line) &&
+   line.length>=3&&
+   line.length<=40&&
+   !/^(total|subtotal|amount|tax|gst|cash|change|date|invoice|bill|receipt)$/i.test(line)&&
    !/\d/.test(line)
   ){
-
    title=line;
-   break;
-
+   break
   }
-
  }
 
- let date=localDate(new Date());
-
- let m=text.match(
-  /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/
- );
+ let date=localDate(new Date()),
+ m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
 
  if(m){
-
-  let y=
-   m[3].length===2
-   ?"20"+m[3]
-   :m[3];
+  let y=m[3].length===2?"20"+m[3]:m[3];
 
   date=
-   `${y}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
-
+  `${y}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`
  }
 
- return {
-  title,
-  amount,
-  date
- };
-
+ return {title,amount,date};
 }
 
-
-/*
-Manual save button is still available.
-
-If OCR did NOT detect the amount automatically,
-you can enter/correct it and press this button.
-*/
-
 function saveScan(){
-
- let title=$("stitle").value.trim();
- let amount=Number($("samount").value);
- let date=$("sdate").value;
+ let title=$("stitle").value.trim(),
+ amount=Number($("samount").value),
+ date=$("sdate").value;
 
  if(!title||amount<=0||!date)
   return toast("Check scanned details");
@@ -761,13 +919,206 @@ function saveScan(){
 
  refresh();
 
- toast(
-  money(amount)+
-  " deducted from balance and added to Calendar"
- );
-
+ toast(money(amount)+" deducted from balance");
 }
 
+/* REMINDERS - NEW FEATURE */
+
+function toggleReminder(){
+ $("reminderForm").classList.toggle("hidden");
+
+ if(!$("reminderForm").classList.contains("hidden")){
+  $("rdate").value=localDate(new Date());
+
+  let now=new Date();
+  $("rtime").value=
+   String(now.getHours()).padStart(2,"0")+":"+
+   String(now.getMinutes()+1).padStart(2,"0");
+ }
+}
+
+function addReminder(){
+ let title=$("rtitle").value.trim(),
+ amount=Number($("ramount").value)||0,
+ date=$("rdate").value,
+ time=$("rtime").value,
+ type=$("rtype").value;
+
+ if(!title)return toast("Enter reminder title");
+ if(!date)return toast("Select due date");
+ if(!time)return toast("Select reminder time");
+
+ data.reminders.push({
+  id:Date.now(),
+  title,
+  amount,
+  date,
+  time,
+  type,
+  completed:false,
+  alerted:false
+ });
+
+ save();
+
+ $("rtitle").value="";
+ $("ramount").value="";
+ $("rdate").value="";
+ $("rtime").value="";
+
+ $("reminderForm").classList.add("hidden");
+
+ refresh();
+
+ toast("🔔 Reminder added");
+}
+
+function renderReminders(){
+ let list=$("reminderList");
+
+ if(!data.reminders.length){
+  list.innerHTML=
+  '<div class="empty">🔔<br><b>No reminders yet</b><br>Add an EMI, bill or payment reminder.</div>';
+
+  $("upcomingReminders").textContent=0;
+  $("todayReminders").textContent=0;
+  $("completedReminders").textContent=0;
+  return;
+ }
+
+ let today=localDate(new Date());
+
+ let upcoming=data.reminders.filter(r=>!r.completed&&r.date>=today).length;
+ let dueToday=data.reminders.filter(r=>!r.completed&&r.date===today).length;
+ let completed=data.reminders.filter(r=>r.completed).length;
+
+ $("upcomingReminders").textContent=upcoming;
+ $("todayReminders").textContent=dueToday;
+ $("completedReminders").textContent=completed;
+
+ list.innerHTML=[...data.reminders]
+ .sort((a,b)=>{
+  let aa=a.date+" "+(a.time||"");
+  let bb=b.date+" "+(b.time||"");
+  return aa.localeCompare(bb);
+ })
+ .map(r=>{
+  let due=isReminderDue(r);
+
+  return `
+  <div class="reminderCard ${r.completed?"reminderDone":""}">
+   <div class="reminderLeft">
+    <div class="reminderIcon">🔔</div>
+
+    <div>
+     <div class="reminderTitle">${safe(r.title)}</div>
+
+     <div class="reminderDate">
+      ${formatDate(r.date)}
+      ${r.time?" • "+r.time:""}
+      • ${safe(r.type)}
+     </div>
+
+     ${!r.completed&&due
+      ?'<div class="reminderDue">⚠️ DUE NOW</div>'
+      :""}
+
+     ${!r.completed&&!due&&r.date===today
+      ?'<div style="color:#ffd166;font-size:11px;font-weight:800;margin-top:4px">TODAY</div>'
+      :""}
+    </div>
+   </div>
+
+   <div style="text-align:right">
+    ${r.amount?`<div class="reminderAmount">${money(r.amount)}</div>`:""}
+
+    <div class="reminderButtons">
+     ${!r.completed
+      ?`<button class="doneBtn" onclick="completeReminder(${r.id})">✓ Done</button>`
+      :""}
+
+     <button class="reminderDelete" onclick="deleteReminder(${r.id})">Delete</button>
+    </div>
+   </div>
+  </div>`;
+ }).join("");
+}
+
+function isReminderDue(r){
+ if(r.completed)return false;
+
+ let due=new Date(r.date+"T"+(r.time||"23:59"));
+ return new Date()>=due;
+}
+
+function completeReminder(id){
+ let r=data.reminders.find(x=>x.id===id);
+ if(!r)return;
+
+ r.completed=true;
+
+ save();
+ renderReminders();
+ calendar();
+
+ toast("✅ Reminder completed");
+}
+
+function deleteReminder(id){
+ let r=data.reminders.find(x=>x.id===id);
+
+ if(r&&confirm("Delete this reminder?")){
+  data.reminders=data.reminders.filter(x=>x.id!==id);
+
+  save();
+  renderReminders();
+  calendar();
+
+  toast("Reminder deleted");
+ }
+}
+
+function checkReminders(){
+ if(!data.reminders.length)return;
+
+ let now=new Date();
+ let changed=false;
+
+ data.reminders.forEach(r=>{
+  if(r.completed||r.alerted)return;
+
+  let due=new Date(r.date+"T"+(r.time||"23:59"));
+
+  if(now>=due){
+   r.alerted=true;
+   changed=true;
+
+   toast("🔔 Reminder: "+r.title);
+
+   if("Notification" in window){
+    if(Notification.permission==="granted"){
+     new Notification("Finance Manager 🔔",{
+      body:r.title+(r.amount?" • "+money(r.amount):"")
+     });
+    }
+   }
+  }
+ });
+
+ if(changed)save();
+
+ renderReminders();
+}
+
+async function enableNotifications(){
+ if(!("Notification" in window))return;
+
+ if(Notification.permission==="default"){
+  try{
+   await Notification.requestPermission();
+  }catch(e){}
+ }
+}
 
 /* HELPERS */
 
@@ -781,28 +1132,31 @@ function localDate(d){
 
 function formatDate(x){
  return new Date(x+"T00:00:00")
-  .toLocaleDateString(
-   "en-IN",
-   {
-    day:"numeric",
-    month:"short",
-    year:"numeric"
-   }
-  );
+ .toLocaleDateString("en-IN",{
+  day:"numeric",
+  month:"short",
+  year:"numeric"
+ })
 }
 
 function toast(msg){
  $("toast").textContent=msg;
  $("toast").classList.add("show");
 
- setTimeout(
-  ()=>$("toast").classList.remove("show"),
-  2500
- );
+ setTimeout(()=>$("toast").classList.remove("show"),2500)
 }
 
 $("edate").value=localDate(new Date());
 
+/* CHECK REMINDERS REGULARLY */
+setInterval(checkReminders,30000);
+
+/* ASK FOR NOTIFICATION PERMISSION WHEN REMINDERS ARE USED */
+document.addEventListener("click",function(e){
+ if(e.target.closest("#nReminders")||e.target.closest("#reminderForm")){
+  enableNotifications();
+ }
+});
 </script>
 </body>
 </html>
