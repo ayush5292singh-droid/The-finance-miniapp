@@ -9,69 +9,297 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif}
 body{background:#070914;color:white;min-height:100vh}
-button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
-#lock{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#292060,#070914 55%)}
-.lockbox{width:100%;max-width:430px;text-align:center;padding:35px 25px;background:#121424eF;border:1px solid #30344c;border-radius:30px;box-shadow:0 30px 100px #0008}
-.lockicon{font-size:45px;width:85px;height:85px;display:flex;align-items:center;justify-content:center;margin:auto auto 20px;border-radius:25px;background:linear-gradient(135deg,#6350ef,#428cf5)}
-.lockbox h1{font-size:32px}.lockbox p{color:#9298ad;margin:8px 0 25px}
-#password{width:100%;padding:16px;background:#0b0e19;border:1px solid #343750;border-radius:15px;color:white;text-align:center;font-size:22px;letter-spacing:7px}
-.btn{border:0;padding:14px 20px;border-radius:14px;color:white;background:linear-gradient(90deg,#6755ee,#438cf5);font-weight:800}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+#lock{
+position:fixed;inset:0;z-index:9999;
+display:flex;align-items:center;justify-content:center;
+padding:20px;
+background:radial-gradient(circle at top,#292060,#070914 55%)
+}
+.lockbox{
+width:100%;max-width:430px;text-align:center;padding:35px 25px;
+background:#121424eF;border:1px solid #30344c;border-radius:30px;
+box-shadow:0 30px 100px #0008
+}
+.lockicon{
+font-size:45px;width:85px;height:85px;display:flex;
+align-items:center;justify-content:center;margin:auto auto 20px;
+border-radius:25px;background:linear-gradient(135deg,#6350ef,#428cf5)
+}
+.lockbox h1{font-size:32px}
+.lockbox p{color:#9298ad;margin:8px 0 25px}
+#password{
+width:100%;padding:16px;background:#0b0e19;border:1px solid #343750;
+border-radius:15px;color:white;text-align:center;font-size:22px;letter-spacing:7px
+}
+.btn{
+border:0;padding:14px 20px;border-radius:14px;color:white;
+background:linear-gradient(90deg,#6755ee,#438cf5);font-weight:800
+}
 .error{color:#ff7070;min-height:22px;margin-top:10px}
+
 .app{max-width:1250px;margin:auto;padding:30px 18px 100px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.welcome,.label,.smalllabel{color:#8e94aa;letter-spacing:3px;font-size:12px;font-weight:800}
-.logo{font-size:clamp(45px,7vw,80px);font-weight:900;line-height:.9;margin-top:10px}.logo span{display:block;color:#7661ff}
-.subtitle{color:#8f94aa;margin-top:15px}.robot{font-size:85px;filter:drop-shadow(0 0 30px #7661ff)}
-.balance{padding:35px;border-radius:30px;background:linear-gradient(120deg,#6748f1,#438ff5);box-shadow:0 20px 60px #4e4ae944}
-.balanceAmount{font-size:clamp(42px,7vw,70px);font-weight:900;margin-top:25px}.available{opacity:.8;margin-top:7px}
-.salary{margin-top:20px;padding:22px;border:1px solid #292d43;background:#121523;border-radius:22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.salaryvalue{font-size:30px;font-weight:900}.salarytitle{color:#8e94ac;font-size:12px;letter-spacing:3px}
-.icon{width:60px;height:60px;border-radius:18px;background:#222642;display:flex;align-items:center;justify-content:center;font-size:28px}
+header{
+display:flex;justify-content:space-between;align-items:center;margin-bottom:30px
+}
+.welcome,.label,.smalllabel{
+color:#8e94aa;letter-spacing:3px;font-size:12px;font-weight:800
+}
+.logo{
+font-size:clamp(45px,7vw,80px);font-weight:900;line-height:.9;margin-top:10px
+}
+.logo span{display:block;color:#7661ff}
+.subtitle{color:#8f94aa;margin-top:15px}
+.robot{font-size:85px;filter:drop-shadow(0 0 30px #7661ff)}
+
+.balance{
+padding:35px;border-radius:30px;
+background:linear-gradient(120deg,#6748f1,#438ff5);
+box-shadow:0 20px 60px #4e4ae944
+}
+.balanceAmount{font-size:clamp(42px,7vw,70px);font-weight:900;margin-top:25px}
+.available{opacity:.8;margin-top:7px}
+
+.salary{
+margin-top:20px;padding:22px;border:1px solid #292d43;
+background:#121523;border-radius:22px;
+display:flex;justify-content:space-between;align-items:center;gap:15px
+}
+.salaryvalue{font-size:30px;font-weight:900}
+.salarytitle{color:#8e94ac;font-size:12px;letter-spacing:3px}
+.icon{
+width:60px;height:60px;border-radius:18px;background:#222642;
+display:flex;align-items:center;justify-content:center;font-size:28px
+}
 .salaryleft{display:flex;gap:15px;align-items:center}
-.nav{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0}.nav button{padding:12px 16px;border:1px solid #303449;background:#121522;color:#d0d3df;border-radius:13px}.nav .active{background:#6a58ed;border-color:#6a58ed}
-.section{margin-top:25px}.section h2{font-size:34px;margin-top:6px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:20px}.card{background:#111421;border:1px solid #292d40;border-radius:21px;padding:21px}.card span{color:#858ba1;font-size:12px}.card strong{display:block;font-size:27px;margin-top:8px}
-.form{margin-top:18px;padding:20px;background:#111421;border:1px solid #292d40;border-radius:20px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:7px}.field label{color:#969bb0;font-size:13px}.field input,.field select{padding:13px;border-radius:12px;border:1px solid #33374d;background:#0b0e19;color:white;outline:none}
-.actions{display:flex;gap:10px;margin-top:16px}.secondary{padding:12px 17px;border:1px solid #383d52;background:#181b29;color:white;border-radius:12px}
-.list{display:grid;gap:13px;margin-top:18px}.expense{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px;background:#111421;border:1px solid #292d40;border-radius:20px}.expenseleft{display:flex;align-items:center;gap:14px}.emoji{width:50px;height:50px;border-radius:15px;background:#222642;display:flex;align-items:center;justify-content:center;font-size:23px}.amount{color:#ff7373;font-weight:900;font-size:19px}
-.delete{border:0;background:none;color:#777d94;font-size:12px;margin-top:5px}
-.empty{text-align:center;padding:40px;color:#858a9e;border:1px dashed #313548;border-radius:20px}
+
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0}
+.nav button{
+padding:12px 16px;border:1px solid #303449;
+background:#121522;color:#d0d3df;border-radius:13px
+}
+.nav .active{background:#6a58ed;border-color:#6a58ed}
+
+.section{margin-top:25px}
+.section h2{font-size:34px;margin-top:6px}
+
+.stats{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:15px;margin-top:20px
+}
+.card{
+background:#111421;border:1px solid #292d40;
+border-radius:21px;padding:21px
+}
+.card span{color:#858ba1;font-size:12px}
+.card strong{display:block;font-size:27px;margin-top:8px}
+
+.form{
+margin-top:18px;padding:20px;background:#111421;
+border:1px solid #292d40;border-radius:20px
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{color:#969bb0;font-size:13px}
+.field input,.field select{
+padding:13px;border-radius:12px;border:1px solid #33374d;
+background:#0b0e19;color:white;outline:none
+}
+.actions{display:flex;gap:10px;margin-top:16px}
+.secondary{
+padding:12px 17px;border:1px solid #383d52;
+background:#181b29;color:white;border-radius:12px
+}
+
+.list{display:grid;gap:13px;margin-top:18px}
+.expense{
+display:flex;justify-content:space-between;align-items:center;
+gap:15px;padding:18px;background:#111421;
+border:1px solid #292d40;border-radius:20px
+}
+.expenseleft{display:flex;align-items:center;gap:14px}
+.emoji{
+width:50px;height:50px;border-radius:15px;background:#222642;
+display:flex;align-items:center;justify-content:center;font-size:23px
+}
+.amount{color:#ff7373;font-weight:900;font-size:19px}
+.delete{
+border:0;background:none;color:#777d94;font-size:12px;margin-top:5px
+}
+.empty{
+text-align:center;padding:40px;color:#858a9e;
+border:1px dashed #313548;border-radius:20px
+}
 
 /* LOANS */
-.loanSummary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
-.loanCard{background:#111421;border:1px solid #292d40;border-radius:22px;padding:20px}
-.loanTop{display:flex;justify-content:space-between;gap:10px}.loanName{font-size:19px;font-weight:800}.loanBalance{font-size:28px;font-weight:900;margin:15px 0 3px}
-.progress{height:9px;background:#292e43;border-radius:20px;overflow:hidden;margin:15px 0 7px}.progressbar{height:100%;background:linear-gradient(90deg,#7355ff,#409cff)}
-.loanInfo{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.loanInfo div{padding:11px;background:#0e1220;border-radius:11px}.loanInfo small{display:block;color:#858ba1}
-.loanButtons{display:flex;gap:8px;margin-top:13px}.loanButtons button{padding:9px 12px;border-radius:10px;border:0}.pay{background:#1c805d;color:white}.remove{background:#321b23;color:#ff8b9b}
+.loanSummary{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:14px;margin-top:20px
+}
+.loanCard{
+background:#111421;border:1px solid #292d40;
+border-radius:22px;padding:20px
+}
+.loanTop{display:flex;justify-content:space-between;gap:10px}
+.loanName{font-size:19px;font-weight:800}
+.loanBalance{font-size:28px;font-weight:900;margin:15px 0 3px}
+.progress{
+height:9px;background:#292e43;border-radius:20px;
+overflow:hidden;margin:15px 0 7px
+}
+.progressbar{
+height:100%;background:linear-gradient(90deg,#7355ff,#409cff)
+}
+.loanInfo{
+display:grid;grid-template-columns:1fr 1fr;
+gap:9px;margin-top:15px
+}
+.loanInfo div{padding:11px;background:#0e1220;border-radius:11px}
+.loanInfo small{display:block;color:#858ba1}
+.loanButtons{display:flex;gap:8px;margin-top:13px}
+.loanButtons button{padding:9px 12px;border-radius:10px;border:0}
+.pay{background:#1c805d;color:white}
+.remove{background:#321b23;color:#ff8b9b}
 .loanTotal{font-size:25px;font-weight:900}
 
 /* CALENDAR */
-.calendar{margin-top:20px;background:#101320;border:1px solid #292d40;border-radius:23px;overflow:hidden}.calhead{padding:23px;background:linear-gradient(120deg,#16b976,#14b978)}.caltitle{display:flex;justify-content:space-between;align-items:center}.calbuttons button{width:40px;height:40px;border:1px solid #ffffff55;background:#ffffff18;color:white;border-radius:10px}.week,.days{display:grid;grid-template-columns:repeat(7,1fr)}.week div{text-align:center;padding:12px;color:#8e94aa;font-size:12px}.day{min-height:85px;border:1px solid #222638;padding:7px;cursor:pointer}.day.other{opacity:.25}.today{box-shadow:inset 0 0 0 2px #7662ff}.dayexp{color:#ff7777;font-size:10px;font-weight:800;margin-top:12px}
+.calendar{
+margin-top:20px;background:#101320;
+border:1px solid #292d40;border-radius:23px;overflow:hidden
+}
+.calhead{
+padding:23px;background:linear-gradient(120deg,#16b976,#14b978)
+}
+.caltitle{
+display:flex;justify-content:space-between;align-items:center
+}
+.calbuttons button{
+width:40px;height:40px;border:1px solid #ffffff55;
+background:#ffffff18;color:white;border-radius:10px
+}
+.week,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+.week div{
+text-align:center;padding:12px;color:#8e94aa;font-size:12px
+}
+.day{
+min-height:85px;border:1px solid #222638;
+padding:7px;cursor:pointer
+}
+.day.other{opacity:.25}
+.today{box-shadow:inset 0 0 0 2px #7662ff}
+.dayexp{color:#ff7777;font-size:10px;font-weight:800;margin-top:12px}
 
 /* SCANNER */
-.scanner{margin-top:18px;padding:20px;background:#0e111d;border:1px solid #292d40;border-radius:22px}.camera{position:relative;background:#000;border-radius:18px;overflow:hidden;min-height:250px}.camera video{width:100%;display:block;max-height:500px;object-fit:cover}.scanline{position:absolute;left:10%;right:10%;top:50%;height:2px;background:#65a0ff;box-shadow:0 0 20px #65a0ff}.ocr{margin-top:12px;padding:15px;background:#090b14;border-radius:14px;color:#aeb3c5;white-space:pre-wrap;max-height:180px;overflow:auto}
-.bars{height:250px;display:flex;align-items:end;gap:10px;margin-top:18px;padding:15px;background:#111421;border-radius:20px}.barwrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:6px}.bar{width:70%;max-width:45px;background:linear-gradient(#7662ff,#438cf5);border-radius:8px 8px 2px 2px;min-height:3px}
-.modal{position:fixed;inset:0;z-index:5000;background:#000b;display:flex;align-items:center;justify-content:center;padding:20px}.modalbox{width:100%;max-width:500px;background:#121522;border:1px solid #34384e;border-radius:24px;padding:23px}.modalhead{display:flex;justify-content:space-between}.close{width:40px;height:40px;border:0;background:#252a3c;color:white;border-radius:10px;font-size:20px}
-.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,120px);background:#202437;border:1px solid #3b4058;padding:13px 20px;border-radius:14px;z-index:10000;transition:.3s}.toast.show{transform:translate(-50%,0)}
+.scanner{
+margin-top:18px;padding:20px;background:#0e111d;
+border:1px solid #292d40;border-radius:22px
+}
+.camera{
+position:relative;background:#000;border-radius:18px;
+overflow:hidden;min-height:250px
+}
+.camera video{
+width:100%;display:block;max-height:500px;object-fit:cover
+}
+.scanline{
+position:absolute;left:10%;right:10%;top:50%;
+height:2px;background:#65a0ff;box-shadow:0 0 20px #65a0ff
+}
+.ocr{
+margin-top:12px;padding:15px;background:#090b14;
+border-radius:14px;color:#aeb3c5;white-space:pre-wrap;
+max-height:180px;overflow:auto
+}
 
-/* REMINDERS - NEW FEATURE */
-.reminderCard{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:18px;background:#111421;border:1px solid #292d40;border-radius:20px}
+.bars{
+height:250px;display:flex;align-items:end;gap:10px;
+margin-top:18px;padding:15px;background:#111421;border-radius:20px
+}
+.barwrap{
+flex:1;height:100%;display:flex;flex-direction:column;
+justify-content:end;align-items:center;gap:6px
+}
+.bar{
+width:70%;max-width:45px;
+background:linear-gradient(#7662ff,#438cf5);
+border-radius:8px 8px 2px 2px;min-height:3px
+}
+
+/* REMINDERS */
+.reminderCard{
+display:flex;justify-content:space-between;
+align-items:center;gap:15px;padding:18px;
+background:#111421;border:1px solid #292d40;
+border-radius:20px
+}
 .reminderLeft{display:flex;align-items:center;gap:14px}
-.reminderIcon{width:50px;height:50px;border-radius:15px;background:#29233f;display:flex;align-items:center;justify-content:center;font-size:23px}
+.reminderIcon{
+width:50px;height:50px;border-radius:15px;
+background:#25213e;display:flex;align-items:center;
+justify-content:center;font-size:23px
+}
 .reminderTitle{font-weight:800}
-.reminderDate{color:#858ba1;font-size:12px;margin-top:5px}
-.reminderAmount{font-size:18px;font-weight:900;color:#63d5a8}
-.reminderDue{color:#ff7777;font-size:11px;font-weight:800;margin-top:4px}
-.reminderDone{opacity:.45}
-.reminderDone .reminderTitle{text-decoration:line-through}
-.reminderButtons{display:flex;gap:7px;margin-top:7px}
-.reminderButtons button{padding:7px 10px;border:0;border-radius:9px;font-size:11px}
-.doneBtn{background:#1c805d;color:white}
-.reminderDelete{background:#321b23;color:#ff8b9b}
+.reminderTime{color:#858ba1;font-size:12px;margin-top:5px}
+.reminderDelete{
+border:0;background:#321b23;color:#ff8b9b;
+padding:9px 12px;border-radius:10px
+}
+.reminderDone{
+opacity:.45;
+}
+.reminderAlert{
+position:fixed;left:50%;top:25px;
+transform:translateX(-50%);
+width:calc(100% - 30px);max-width:500px;
+background:#171a2b;border:1px solid #6659ef;
+box-shadow:0 20px 70px #000b;
+border-radius:22px;padding:22px;
+z-index:11000;
+text-align:center;
+animation:reminderPop .35s ease
+}
+@keyframes reminderPop{
+from{transform:translateX(-50%) translateY(-30px);opacity:0}
+to{transform:translateX(-50%) translateY(0);opacity:1}
+}
 
-@media(max-width:700px){.app{padding:23px 13px 70px}header{align-items:flex-start}.robot{font-size:60px}.grid,.stats,.loanSummary{grid-template-columns:1fr}.balance{padding:25px}.salary{align-items:flex-start}.day{min-height:65px}.loanInfo{font-size:13px}.reminderCard{align-items:flex-start;flex-direction:column}.reminderButtons{flex-wrap:wrap}}
+.modal{
+position:fixed;inset:0;z-index:5000;background:#000b;
+display:flex;align-items:center;justify-content:center;padding:20px
+}
+.modalbox{
+width:100%;max-width:500px;background:#121522;
+border:1px solid #34384e;border-radius:24px;padding:23px
+}
+.modalhead{
+display:flex;justify-content:space-between
+}
+.close{
+width:40px;height:40px;border:0;background:#252a3c;
+color:white;border-radius:10px;font-size:20px
+}
+.toast{
+position:fixed;bottom:25px;left:50%;
+transform:translate(-50%,120px);
+background:#202437;border:1px solid #3b4058;
+padding:13px 20px;border-radius:14px;
+z-index:10000;transition:.3s
+}
+.toast.show{transform:translate(-50%,0)}
+
+@media(max-width:700px){
+.app{padding:23px 13px 70px}
+header{align-items:flex-start}
+.robot{font-size:60px}
+.grid,.stats,.loanSummary{grid-template-columns:1fr}
+.balance{padding:25px}
+.salary{align-items:flex-start}
+.day{min-height:65px}
+.loanInfo{font-size:13px}
+}
 </style>
 </head>
 
@@ -82,8 +310,10 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 <div class="lockicon">🔐</div>
 <h1>Finance Manager</h1>
 <p>Your money. Your control.</p>
-<input id="password" type="password" maxlength="4" inputmode="numeric" placeholder="••••">
-<button class="btn" style="width:100%;margin-top:14px" onclick="unlock()">ENTER</button>
+<input id="password" type="password" maxlength="4"
+inputmode="numeric" placeholder="••••">
+<button class="btn" style="width:100%;margin-top:14px"
+onclick="unlock()">ENTER</button>
 <div id="error" class="error"></div>
 </div>
 </div>
@@ -108,7 +338,10 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 <section class="salary">
 <div class="salaryleft">
 <div class="icon">💼</div>
-<div><div class="salarytitle">SALARY PER MONTH</div><div id="salary" class="salaryvalue">₹0</div></div>
+<div>
+<div class="salarytitle">SALARY PER MONTH</div>
+<div id="salary" class="salaryvalue">₹0</div>
+</div>
 </div>
 <button class="secondary" onclick="salaryModal()">+ ADD</button>
 </section>
@@ -126,6 +359,7 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 <section id="dashboard" class="section">
 <div class="smalllabel">OVERVIEW</div>
 <h2>Your Money<br>Stay in control 💪</h2>
+
 <div class="stats">
 <div class="card"><span>TODAY</span><strong id="today">₹0</strong></div>
 <div class="card"><span>THIS MONTH</span><strong id="month">₹0</strong></div>
@@ -135,27 +369,60 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 
 <section id="expenses" class="section hidden">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-<div><div class="smalllabel">MONEY TRACKER</div><h2>Expenses</h2></div>
+<div>
+<div class="smalllabel">MONEY TRACKER</div>
+<h2>Expenses</h2>
+</div>
 <button class="btn" onclick="toggleExpense()">+ ADD EXPENSE</button>
 </div>
 
 <div id="expenseForm" class="form hidden">
 <div class="grid">
-<div class="field"><label>Expense title</label><input id="etitle" placeholder="Food"></div>
-<div class="field"><label>Amount</label><input id="eamount" type="number" placeholder="₹"></div>
-<div class="field"><label>Date</label><input id="edate" type="date"></div>
-<div class="field"><label>Category</label><select id="ecat">
-<option>Food</option><option>Travel</option><option>Shopping</option><option>Bills</option><option>Education</option><option>Health</option><option>Entertainment</option><option>Other</option>
-</select></div>
+<div class="field">
+<label>Expense title</label>
+<input id="etitle" placeholder="Food">
 </div>
-<div class="actions"><button class="btn" onclick="addExpense()">SAVE EXPENSE</button><button class="secondary" onclick="toggleExpense()">CANCEL</button></div>
+
+<div class="field">
+<label>Amount</label>
+<input id="eamount" type="number" placeholder="₹">
 </div>
+
+<div class="field">
+<label>Date</label>
+<input id="edate" type="date">
+</div>
+
+<div class="field">
+<label>Category</label>
+<select id="ecat">
+<option>Food</option>
+<option>Travel</option>
+<option>Shopping</option>
+<option>Bills</option>
+<option>Education</option>
+<option>Health</option>
+<option>Entertainment</option>
+<option>Other</option>
+</select>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn" onclick="addExpense()">SAVE EXPENSE</button>
+<button class="secondary" onclick="toggleExpense()">CANCEL</button>
+</div>
+</div>
+
 <div id="expenseList" class="list"></div>
 </section>
 
 <section id="loans" class="section hidden">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-<div><div class="smalllabel">DEBT TRACKER</div><h2>Loan Manager 🏦</h2></div>
+<div>
+<div class="smalllabel">DEBT TRACKER</div>
+<h2>Loan Manager 🏦</h2>
+</div>
 <button class="btn" onclick="toggleLoan()">+ ADD LOAN</button>
 </div>
 
@@ -167,996 +434,1669 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 
 <div id="loanForm" class="form hidden">
 <div class="grid">
-<div class="field"><label>Loan name</label><input id="lname" placeholder="Home Loan"></div>
-<div class="field"><label>Total loan</label><input id="lamount" type="number" placeholder="₹"></div>
-<div class="field"><label>Remaining amount</label><input id="lremain" type="number" placeholder="₹"></div>
-<div class="field"><label>Interest rate %</label><input id="linterest" type="number" step=".01" placeholder="8.5"></div>
-<div class="field"><label>Monthly EMI</label><input id="lemi" type="number" placeholder="₹"></div>
-<div class="field"><label>Next payment</label><input id="ldate" type="date"></div>
+
+<div class="field">
+<label>Loan name</label>
+<input id="lname" placeholder="Home Loan">
 </div>
-<div class="actions"><button class="btn" onclick="addLoan()">SAVE LOAN</button><button class="secondary" onclick="toggleLoan()">CANCEL</button></div>
+
+<div class="field">
+<label>Total loan</label>
+<input id="lamount" type="number" placeholder="₹">
+</div>
+
+<div class="field">
+<label>Remaining amount</label>
+<input id="lremain" type="number" placeholder="₹">
+</div>
+
+<div class="field">
+<label>Interest rate %</label>
+<input id="linterest" type="number" step=".01" placeholder="8.5">
+</div>
+
+<div class="field">
+<label>Monthly EMI</label>
+<input id="lemi" type="number" placeholder="₹">
+</div>
+
+<div class="field">
+<label>Next payment</label>
+<input id="ldate" type="date">
+</div>
+
+</div>
+
+<div class="actions">
+<button class="btn" onclick="addLoan()">SAVE LOAN</button>
+<button class="secondary" onclick="toggleLoan()">CANCEL</button>
+</div>
 </div>
 
 <div id="loanList" class="list"></div>
 </section>
 
 <section id="calendar" class="section hidden">
-<div class="smalllabel">TRANSACTION CALENDAR</div><h2>Monthly Calendar</h2>
+<div class="smalllabel">TRANSACTION CALENDAR</div>
+<h2>Monthly Calendar</h2>
+
 <div class="calendar">
+
 <div class="calhead">
-<div class="caltitle"><h3 id="monthTitle"></h3><div class="calbuttons"><button onclick="changeMonth(-1)">‹</button><button onclick="changeMonth(1)">›</button></div></div>
-<div style="display:flex;justify-content:space-around;text-align:center;margin-top:18px"><div>Income<br><b id="cincome">₹0</b></div><div>Expenses<br><b id="cexpense">₹0</b></div><div>Balance<br><b id="ctotal">₹0</b></div></div>
+<div class="caltitle">
+<h3 id="monthTitle"></h3>
+<div class="calbuttons">
+<button onclick="changeMonth(-1)">‹</button>
+<button onclick="changeMonth(1)">›</button>
 </div>
-<div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+</div>
+
+<div style="display:flex;justify-content:space-around;text-align:center;margin-top:18px">
+<div>Income<br><b id="cincome">₹0</b></div>
+<div>Expenses<br><b id="cexpense">₹0</b></div>
+<div>Balance<br><b id="ctotal">₹0</b></div>
+</div>
+</div>
+
+<div class="week">
+<div>Sun</div><div>Mon</div><div>Tue</div>
+<div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+</div>
+
 <div id="days" class="days"></div>
 </div>
 </section>
 
 <section id="stats" class="section hidden">
-<div class="smalllabel">ANALYTICS</div><h2>Statistics</h2>
+<div class="smalllabel">ANALYTICS</div>
+<h2>Statistics</h2>
+
 <div class="stats">
 <div class="card"><span>AVERAGE</span><strong id="average">₹0</strong></div>
 <div class="card"><span>BIGGEST</span><strong id="biggest">₹0</strong></div>
 <div class="card"><span>TRANSACTIONS</span><strong id="count">0</strong></div>
 </div>
+
 <h2 style="font-size:25px;margin-top:25px">Last 7 Days</h2>
 <div id="bars" class="bars"></div>
 </section>
 
 <section id="scanner" class="section hidden">
-<div class="smalllabel">SMART SCANNER</div><h2>Scan Receipt 📷</h2>
-<p style="color:#858ba0;margin-top:7px">Scan or upload a receipt and check the detected details.</p>
+<div class="smalllabel">SMART SCANNER</div>
+<h2>Scan Receipt 📷</h2>
+
+<p style="color:#858ba0;margin-top:7px">
+Scan or upload a receipt and check the detected details.
+</p>
+
 <div class="scanner">
-<div class="camera"><video id="video" autoplay playsinline muted></video><div class="scanline"></div></div>
+
+<div class="camera">
+<video id="video" autoplay playsinline muted></video>
+<div class="scanline"></div>
+</div>
+
 <div class="actions">
 <button class="btn" onclick="startCamera()">📷 START</button>
 <button class="btn" onclick="capture()">📸 CAPTURE</button>
 <button class="secondary" onclick="stopCamera()">STOP</button>
-<label class="secondary">🖼️ Upload<input id="file" type="file" accept="image/*" hidden></label>
+<label class="secondary">
+🖼️ Upload
+<input id="file" type="file" accept="image/*" hidden>
+</label>
 </div>
-<div id="scanStatus" style="color:#9298ad;margin-top:12px">Camera ready.</div>
+
+<div id="scanStatus" style="color:#9298ad;margin-top:12px">
+Camera ready.
+</div>
+
 <div id="ocr" class="ocr hidden"></div>
+
 <div id="scanForm" class="form hidden">
+
 <div class="grid">
-<div class="field"><label>Title</label><input id="stitle"></div>
-<div class="field"><label>Amount</label><input id="samount" type="number"></div>
-<div class="field"><label>Date</label><input id="sdate" type="date"></div>
-<div class="field"><label>Category</label><select id="scat"><option>Food</option><option>Travel</option><option>Shopping</option><option>Bills</option><option>Education</option><option>Health</option><option>Entertainment</option><option>Other</option></select></div>
-</div>
-<div class="actions"><button class="btn" onclick="saveScan()">SAVE SCANNED EXPENSE</button></div>
-</div>
-</div>
-</section>
 
-<!-- REMINDERS - NEW SECTION -->
-<section id="reminders" class="section hidden">
-<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-<div>
-<div class="smalllabel">PAYMENT ALERTS</div>
-<h2>Reminders 🔔</h2>
-</div>
-<button class="btn" onclick="toggleReminder()">+ ADD REMINDER</button>
-</div>
-
-<div class="stats">
-<div class="card"><span>UPCOMING</span><strong id="upcomingReminders">0</strong></div>
-<div class="card"><span>DUE TODAY</span><strong id="todayReminders">0</strong></div>
-<div class="card"><span>COMPLETED</span><strong id="completedReminders">0</strong></div>
-</div>
-
-<div id="reminderForm" class="form hidden">
-<div class="grid">
 <div class="field">
-<label>Reminder title</label>
-<input id="rtitle" placeholder="Electricity Bill">
+<label>Title</label>
+<input id="stitle">
 </div>
 
 <div class="field">
 <label>Amount</label>
-<input id="ramount" type="number" placeholder="₹">
+<input id="samount" type="number">
 </div>
 
 <div class="field">
-<label>Due date</label>
+<label>Date</label>
+<input id="sdate" type="date">
+</div>
+
+<div class="field">
+<label>Category</label>
+<select id="scat">
+<option>Food</option>
+<option>Travel</option>
+<option>Shopping</option>
+<option>Bills</option>
+<option>Education</option>
+<option>Health</option>
+<option>Entertainment</option>
+<option>Other</option>
+</select>
+</div>
+
+</div>
+
+<div class="actions">
+<button class="btn" onclick="saveScan()">
+SAVE SCANNED EXPENSE
+</button>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- REMINDERS -->
+<section id="reminders" class="section hidden">
+
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+
+<div>
+<div class="smalllabel">SMART ALERTS</div>
+<h2>Reminders 🔔</h2>
+</div>
+
+<button class="btn" onclick="toggleReminder()">
++ ADD REMINDER
+</button>
+
+</div>
+
+<div id="reminderForm" class="form hidden">
+
+<div class="grid">
+
+<div class="field">
+<label>Reminder title</label>
+<input id="rtitle" placeholder="Pay electricity bill">
+</div>
+
+<div class="field">
+<label>Date</label>
 <input id="rdate" type="date">
 </div>
 
 <div class="field">
-<label>Reminder time</label>
+<label>Time</label>
 <input id="rtime" type="time">
 </div>
 
-<div class="field">
-<label>Type</label>
-<select id="rtype">
-<option>💡 Bill</option>
-<option>🏦 EMI</option>
-<option>🏠 Rent</option>
-<option>📱 Subscription</option>
-<option>💳 Credit Card</option>
-<option>📝 Other</option>
-</select>
-</div>
 </div>
 
 <div class="actions">
-<button class="btn" onclick="addReminder()">SAVE REMINDER</button>
-<button class="secondary" onclick="toggleReminder()">CANCEL</button>
+
+<button class="btn" onclick="addReminder()">
+SAVE REMINDER
+</button>
+
+<button class="secondary" onclick="toggleReminder()">
+CANCEL
+</button>
+
 </div>
+
 </div>
 
 <div id="reminderList" class="list"></div>
+
 </section>
 
 </main>
 
+<!-- SALARY MODAL -->
 <div id="salaryModal" class="modal hidden">
 <div class="modalbox">
-<div class="modalhead"><h2>Set Salary</h2><button class="close" onclick="closeSalary()">×</button></div>
-<div class="field" style="margin-top:20px"><label>Monthly salary</label><input id="salaryInput" type="number"></div>
-<button class="btn" style="width:100%;margin-top:16px" onclick="saveSalary()">SAVE</button>
+
+<div class="modalhead">
+<h2>Set Salary</h2>
+<button class="close" onclick="closeSalary()">×</button>
+</div>
+
+<div class="field" style="margin-top:20px">
+<label>Monthly salary</label>
+<input id="salaryInput" type="number">
+</div>
+
+<button class="btn" style="width:100%;margin-top:16px"
+onclick="saveSalary()">SAVE</button>
+
 </div>
 </div>
 
+<!-- DAY MODAL -->
 <div id="dayModal" class="modal hidden">
 <div class="modalbox">
-<div class="modalhead"><h2 id="dayTitle"></h2><button class="close" onclick="closeDay()">×</button></div>
+
+<div class="modalhead">
+<h2 id="dayTitle"></h2>
+<button class="close" onclick="closeDay()">×</button>
+</div>
+
 <div id="dayList" class="list"></div>
+
 </div>
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script>
+
 const PASSWORD="7890";
 
-let data=JSON.parse(localStorage.getItem("financeManagerData")||"null")||{
- salary:0,expenses:[],loans:[],reminders:[]
+let data=JSON.parse(
+localStorage.getItem("financeManagerData")||"null"
+)||{
+ salary:0,
+ expenses:[],
+ loans:[],
+ reminders:[]
 };
 
 if(!Array.isArray(data.loans))data.loans=[];
 if(!Array.isArray(data.reminders))data.reminders=[];
 
 let calDate=new Date(),stream=null;
+let reminderTimer=null;
 
 const $=id=>document.getElementById(id);
+
 const money=n=>"₹"+Number(n||0).toLocaleString("en-IN");
 
 function unlock(){
- if($("password").value===PASSWORD){
-  $("lock").classList.add("hidden");
-  $("app").classList.remove("hidden");
-  refresh();
-  checkReminders();
- }else{
-  $("error").textContent="Incorrect password";
-  $("password").value="";
- }
+
+if($("password").value===PASSWORD){
+
+$("lock").classList.add("hidden");
+$("app").classList.remove("hidden");
+
+refresh();
+startReminderChecker();
+
+}else{
+
+$("error").textContent="Incorrect password";
+$("password").value="";
+
 }
 
-$("password").addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
+}
 
-function save(){localStorage.setItem("financeManagerData",JSON.stringify(data))}
-function expensesTotal(){return data.expenses.reduce((s,e)=>s+Number(e.amount),0)}
-function balance(){return Number(data.salary)-expensesTotal()}
+$("password").addEventListener("keydown",e=>{
+if(e.key==="Enter")unlock()
+});
+
+function save(){
+localStorage.setItem(
+"financeManagerData",
+JSON.stringify(data)
+)
+}
+
+function expensesTotal(){
+return data.expenses.reduce(
+(s,e)=>s+Number(e.amount),0
+)
+}
+
+function balance(){
+return Number(data.salary)-expensesTotal()
+}
 
 function refresh(){
- $("salary").textContent=money(data.salary);
- $("balance").textContent=money(balance());
- renderExpenses();dashboard();renderLoans();calendar();stats();renderReminders();
+
+$("salary").textContent=money(data.salary);
+$("balance").textContent=money(balance());
+
+renderExpenses();
+dashboard();
+renderLoans();
+calendar();
+stats();
+renderReminders();
+
 }
 
 function section(id){
- ["dashboard","expenses","loans","calendar","stats","scanner","reminders"].forEach(x=>$(x).classList.add("hidden"));
- $(id).classList.remove("hidden");
 
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+[
+"dashboard",
+"expenses",
+"loans",
+"calendar",
+"stats",
+"scanner",
+"reminders"
+].forEach(x=>$(x).classList.add("hidden"));
 
- const map={
-  dashboard:"nDashboard",
-  expenses:"nExpenses",
-  loans:"nLoans",
-  calendar:"nCalendar",
-  stats:"nStats",
-  scanner:"nScanner",
-  reminders:"nReminders"
- };
+$(id).classList.remove("hidden");
 
- $(map[id])?.classList.add("active");
+document.querySelectorAll(".nav button")
+.forEach(x=>x.classList.remove("active"));
 
- if(id==="reminders")checkReminders();
+const map={
+dashboard:"nDashboard",
+expenses:"nExpenses",
+loans:"nLoans",
+calendar:"nCalendar",
+stats:"nStats",
+scanner:"nScanner",
+reminders:"nReminders"
+};
+
+$(map[id])?.classList.add("active");
+
 }
+
+/* SALARY */
 
 function salaryModal(){
- $("salaryInput").value=data.salary||"";
- $("salaryModal").classList.remove("hidden");
+
+$("salaryInput").value=data.salary||"";
+$("salaryModal").classList.remove("hidden");
+
 }
 
-function closeSalary(){$("salaryModal").classList.add("hidden")}
+function closeSalary(){
+$("salaryModal").classList.add("hidden")
+}
 
 function saveSalary(){
- let n=Number($("salaryInput").value);
- if(n<0||isNaN(n))return toast("Enter a valid salary");
- data.salary=n;save();closeSalary();refresh();toast("Salary saved");
+
+let n=Number($("salaryInput").value);
+
+if(n<0||isNaN(n))
+return toast("Enter a valid salary");
+
+data.salary=n;
+
+save();
+closeSalary();
+refresh();
+
+toast("Salary saved");
+
 }
 
+/* EXPENSES */
+
 function toggleExpense(){
- $("expenseForm").classList.toggle("hidden");
- if(!$("expenseForm").classList.contains("hidden"))
-  $("edate").value=localDate(new Date());
+
+$("expenseForm").classList.toggle("hidden");
+
+if(!$("expenseForm").classList.contains("hidden"))
+$("edate").value=localDate(new Date());
+
 }
 
 function addExpense(){
- let title=$("etitle").value.trim(),
- amount=Number($("eamount").value),
- date=$("edate").value,
- cat=$("ecat").value;
 
- if(!title)return toast("Enter expense title");
- if(amount<=0)return toast("Enter a valid amount");
- if(!date)return toast("Select date");
+let title=$("etitle").value.trim();
+let amount=Number($("eamount").value);
+let date=$("edate").value;
+let cat=$("ecat").value;
 
- data.expenses.push({
-  id:Date.now(),
-  title,
-  amount,
-  date,
-  category:cat
- });
+if(!title)return toast("Enter expense title");
+if(amount<=0)return toast("Enter a valid amount");
+if(!date)return toast("Select date");
 
- save();
+data.expenses.push({
+id:Date.now(),
+title,
+amount,
+date,
+category:cat
+});
 
- $("etitle").value="";
- $("eamount").value="";
- $("expenseForm").classList.add("hidden");
+save();
 
- refresh();
- toast(money(amount)+" deducted from balance");
+$("etitle").value="";
+$("eamount").value="";
+$("expenseForm").classList.add("hidden");
+
+refresh();
+
+toast(money(amount)+" deducted from balance");
+
 }
 
 function emoji(c){
- return {
-  Food:"🍔",
-  Travel:"🚗",
-  Shopping:"🛍️",
-  Bills:"💡",
-  Education:"📚",
-  Health:"❤️",
-  Entertainment:"🎮",
-  Other:"💰"
- }[c]||"💰";
+
+return {
+Food:"🍔",
+Travel:"🚗",
+Shopping:"🛍️",
+Bills:"💡",
+Education:"📚",
+Health:"❤️",
+Entertainment:"🎮",
+Other:"💰"
+}[c]||"💰";
+
 }
 
 function safe(x){
- return String(x).replace(/[&<>"']/g,m=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#039;"
- }[m]));
+
+return String(x).replace(
+/[&<>"']/g,
+m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
+
 }
 
 function renderExpenses(){
- let list=$("expenseList");
 
- if(!data.expenses.length){
-  list.innerHTML='<div class="empty">💸<br><b>No expenses yet</b><br>Add your first expense.</div>';
-  return;
- }
+let list=$("expenseList");
 
- list.innerHTML=[...data.expenses]
- .sort((a,b)=>new Date(b.date)-new Date(a.date))
- .map(e=>`
- <div class="expense">
-  <div class="expenseleft">
-   <div class="emoji">${emoji(e.category)}</div>
-   <div>
-    <b>${safe(e.title)}</b>
-    <div style="color:#777d94;font-size:12px">
-     ${formatDate(e.date)} • ${safe(e.category)}
-    </div>
-   </div>
-  </div>
-  <div style="text-align:right">
-   <div class="amount">-${money(e.amount)}</div>
-   <button class="delete" onclick="deleteExpense(${e.id})">Delete</button>
-  </div>
- </div>`).join("");
+if(!data.expenses.length){
+
+list.innerHTML=
+'<div class="empty">💸<br><b>No expenses yet</b><br>Add your first expense.</div>';
+
+return;
+
+}
+
+list.innerHTML=[...data.expenses]
+.sort((a,b)=>new Date(b.date)-new Date(a.date))
+.map(e=>`
+
+<div class="expense">
+
+<div class="expenseleft">
+
+<div class="emoji">
+${emoji(e.category)}
+</div>
+
+<div>
+<b>${safe(e.title)}</b>
+
+<div style="color:#777d94;font-size:12px">
+${formatDate(e.date)} • ${safe(e.category)}
+</div>
+
+</div>
+
+</div>
+
+<div style="text-align:right">
+
+<div class="amount">
+-${money(e.amount)}
+</div>
+
+<button class="delete"
+onclick="deleteExpense(${e.id})">
+Delete
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
 }
 
 function deleteExpense(id){
- let e=data.expenses.find(x=>x.id===id);
 
- if(e&&confirm("Delete "+e.title+"?")){
-  data.expenses=data.expenses.filter(x=>x.id!==id);
-  save();
-  refresh();
-  toast("Expense deleted");
- }
+let e=data.expenses.find(x=>x.id===id);
+
+if(e&&confirm("Delete "+e.title+"?")){
+
+data.expenses=
+data.expenses.filter(x=>x.id!==id);
+
+save();
+refresh();
+
+toast("Expense deleted");
+
+}
+
 }
 
 function dashboard(){
- let now=new Date(),
- today=localDate(now),
- m=now.getMonth(),
- y=now.getFullYear();
 
- let td=data.expenses
- .filter(e=>e.date===today)
- .reduce((s,e)=>s+Number(e.amount),0);
+let now=new Date();
+let today=localDate(now);
+let m=now.getMonth();
+let y=now.getFullYear();
 
- let mo=data.expenses
- .filter(e=>{
-  let d=new Date(e.date);
-  return d.getMonth()===m&&d.getFullYear()===y;
- })
- .reduce((s,e)=>s+Number(e.amount),0);
+let td=data.expenses
+.filter(e=>e.date===today)
+.reduce((s,e)=>s+Number(e.amount),0);
 
- $("today").textContent=money(td);
- $("month").textContent=money(mo);
- $("total").textContent=money(expensesTotal());
+let mo=data.expenses
+.filter(e=>{
+let d=new Date(e.date);
+return d.getMonth()===m&&
+d.getFullYear()===y
+})
+.reduce((s,e)=>s+Number(e.amount),0);
+
+$("today").textContent=money(td);
+$("month").textContent=money(mo);
+$("total").textContent=money(expensesTotal());
+
 }
 
 /* LOANS */
 
 function toggleLoan(){
- $("loanForm").classList.toggle("hidden")
+$("loanForm").classList.toggle("hidden")
 }
 
 function addLoan(){
- let name=$("lname").value.trim(),
- amount=Number($("lamount").value),
- remaining=Number($("lremain").value),
- interest=Number($("linterest").value)||0,
- emi=Number($("lemi").value),
- date=$("ldate").value;
 
- if(!name)return toast("Enter loan name");
- if(amount<=0)return toast("Enter total loan");
- if(remaining<0||remaining>amount)return toast("Check remaining amount");
- if(emi<=0)return toast("Enter monthly EMI");
+let name=$("lname").value.trim();
+let amount=Number($("lamount").value);
+let remaining=Number($("lremain").value);
+let interest=Number($("linterest").value)||0;
+let emi=Number($("lemi").value);
+let date=$("ldate").value;
 
- data.loans.push({
-  id:Date.now(),
-  name,
-  amount,
-  remaining,
-  interest,
-  emi,
-  date
- });
+if(!name)return toast("Enter loan name");
+if(amount<=0)return toast("Enter total loan");
+if(remaining<0||remaining>amount)
+return toast("Check remaining amount");
+if(emi<=0)return toast("Enter monthly EMI");
 
- save();
+data.loans.push({
+id:Date.now(),
+name,
+amount,
+remaining,
+interest,
+emi,
+date
+});
 
- ["lname","lamount","lremain","linterest","lemi","ldate"]
- .forEach(x=>$(x).value="");
+save();
 
- $("loanForm").classList.add("hidden");
- refresh();
- toast("Loan added");
+[
+"lname",
+"lamount",
+"lremain",
+"linterest",
+"lemi",
+"ldate"
+].forEach(x=>$(x).value="");
+
+$("loanForm").classList.add("hidden");
+
+refresh();
+
+toast("Loan added");
+
 }
 
 function renderLoans(){
- let total=data.loans.reduce((s,l)=>s+Number(l.amount),0);
- let remain=data.loans.reduce((s,l)=>s+Number(l.remaining),0);
- let emi=data.loans.reduce((s,l)=>s+Number(l.emi),0);
 
- $("loanTotal").textContent=money(total);
- $("loanRemain").textContent=money(remain);
- $("loanEMITotal").textContent=money(emi);
+let total=data.loans.reduce(
+(s,l)=>s+Number(l.amount),0
+);
 
- if(!data.loans.length){
-  $("loanList").innerHTML='<div class="empty">🏦<br><b>No loans added</b><br>Add a loan to start tracking it.</div>';
-  return;
- }
+let remain=data.loans.reduce(
+(s,l)=>s+Number(l.remaining),0
+);
 
- $("loanList").innerHTML=data.loans.map(l=>{
-  let paid=l.amount-l.remaining;
-  let pct=Math.max(0,Math.min(100,paid/l.amount*100));
+let emi=data.loans.reduce(
+(s,l)=>s+Number(l.emi),0
+);
 
-  return `<div class="loanCard">
-   <div class="loanTop">
-    <div>
-     <div class="loanName">🏦 ${safe(l.name)}</div>
-     <small style="color:#858ba1">${l.interest}% interest</small>
-    </div>
-    <b>${pct.toFixed(0)}%</b>
-   </div>
+$("loanTotal").textContent=money(total);
+$("loanRemain").textContent=money(remain);
+$("loanEMITotal").textContent=money(emi);
 
-   <div class="loanBalance">${money(l.remaining)}</div>
-   <small style="color:#858ba1">remaining balance</small>
+if(!data.loans.length){
 
-   <div class="progress">
-    <div class="progressbar" style="width:${pct}%"></div>
-   </div>
+$("loanList").innerHTML=
+'<div class="empty">🏦<br><b>No loans added</b><br>Add a loan to start tracking it.</div>';
 
-   <small style="color:#858ba1">${money(paid)} paid of ${money(l.amount)}</small>
+return;
 
-   <div class="loanInfo">
-    <div><small>Total</small><b>${money(l.amount)}</b></div>
-    <div><small>Monthly EMI</small><b>${money(l.emi)}</b></div>
-    <div><small>Next payment</small><b>${l.date||"Not set"}</b></div>
-    <div><small>Interest</small><b>${l.interest}%</b></div>
-   </div>
+}
 
-   <div class="loanButtons">
-    <button class="pay" onclick="payEMI(${l.id})">💳 Pay EMI</button>
-    <button class="remove" onclick="deleteLoan(${l.id})">Delete</button>
-   </div>
-  </div>`;
- }).join("");
+$("loanList").innerHTML=data.loans.map(l=>{
+
+let paid=l.amount-l.remaining;
+
+let pct=Math.max(
+0,
+Math.min(100,paid/l.amount*100)
+);
+
+return `
+
+<div class="loanCard">
+
+<div class="loanTop">
+
+<div>
+
+<div class="loanName">
+🏦 ${safe(l.name)}
+</div>
+
+<small style="color:#858ba1">
+${l.interest}% interest
+</small>
+
+</div>
+
+<b>${pct.toFixed(0)}%</b>
+
+</div>
+
+<div class="loanBalance">
+${money(l.remaining)}
+</div>
+
+<small style="color:#858ba1">
+remaining balance
+</small>
+
+<div class="progress">
+
+<div class="progressbar"
+style="width:${pct}%">
+</div>
+
+</div>
+
+<small style="color:#858ba1">
+${money(paid)} paid of ${money(l.amount)}
+</small>
+
+<div class="loanInfo">
+
+<div>
+<small>Total</small>
+<b>${money(l.amount)}</b>
+</div>
+
+<div>
+<small>Monthly EMI</small>
+<b>${money(l.emi)}</b>
+</div>
+
+<div>
+<small>Next payment</small>
+<b>${l.date||"Not set"}</b>
+</div>
+
+<div>
+<small>Interest</small>
+<b>${l.interest}%</b>
+</div>
+
+</div>
+
+<div class="loanButtons">
+
+<button class="pay"
+onclick="payEMI(${l.id})">
+💳 Pay EMI
+</button>
+
+<button class="remove"
+onclick="deleteLoan(${l.id})">
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
 }
 
 function payEMI(id){
- let l=data.loans.find(x=>x.id===id);
- if(!l)return;
 
- let amount=Math.min(Number(l.emi),Number(l.remaining));
+let l=data.loans.find(x=>x.id===id);
 
- if(amount<=0)return toast("Loan already paid");
+if(!l)return;
 
- l.remaining-=amount;
+let amount=Math.min(
+Number(l.emi),
+Number(l.remaining)
+);
 
- save();
- refresh();
- toast(money(amount)+" EMI recorded");
+if(amount<=0)
+return toast("Loan already paid");
+
+l.remaining-=amount;
+
+save();
+refresh();
+
+toast(money(amount)+" EMI recorded");
+
 }
 
 function deleteLoan(id){
- if(confirm("Delete this loan?")){
-  data.loans=data.loans.filter(x=>x.id!==id);
-  save();
-  refresh();
-  toast("Loan deleted");
- }
+
+if(confirm("Delete this loan?")){
+
+data.loans=
+data.loans.filter(x=>x.id!==id);
+
+save();
+refresh();
+
+toast("Loan deleted");
+
+}
+
 }
 
 /* CALENDAR */
 
 function changeMonth(n){
- calDate.setMonth(calDate.getMonth()+n);
- calendar()
+
+calDate.setMonth(
+calDate.getMonth()+n
+);
+
+calendar();
+
 }
 
 function calendar(){
- let y=calDate.getFullYear(),
- m=calDate.getMonth();
 
- $("monthTitle").textContent=
- calDate.toLocaleString("en-US",{month:"long"})+" "+y;
+let y=calDate.getFullYear();
+let m=calDate.getMonth();
 
- let first=new Date(y,m,1).getDay(),
- days=new Date(y,m+1,0).getDate(),
- html="";
+$("monthTitle").textContent=
+calDate.toLocaleString(
+"en-US",
+{
+month:"long"
+}
+)+" "+y;
 
- for(let i=0;i<42;i++){
-  let num=i-first+1,
-  d=new Date(y,m,num),
-  current=num>=1&&num<=days;
+let first=
+new Date(y,m,1).getDay();
 
-  let ds=localDate(d);
+let days=
+new Date(y,m+1,0).getDate();
 
-  let sum=data.expenses
-  .filter(e=>e.date===ds)
-  .reduce((s,e)=>s+Number(e.amount),0);
+let html="";
 
-  let reminderCount=data.reminders
-  .filter(r=>r.date===ds&&!r.completed)
-  .length;
+for(let i=0;i<42;i++){
 
-  let cls=current?"day":"day other";
+let num=i-first+1;
 
-  if(ds===localDate(new Date()))cls+=" today";
+let d=new Date(y,m,num);
 
-  html+=`
-  <div class="${cls}" onclick="dayModal('${ds}')">
-   <div>${d.getDate()}</div>
-   ${sum?`<div class="dayexp">-${money(sum)}</div>`:""}
-   ${reminderCount?`<div style="color:#ffd166;font-size:10px;font-weight:800;margin-top:5px">🔔 ${reminderCount}</div>`:""}
-  </div>`;
- }
+let current=
+num>=1&&num<=days;
 
- $("days").innerHTML=html;
+let ds=localDate(d);
 
- let month=data.expenses
- .filter(e=>{
-  let d=new Date(e.date);
-  return d.getMonth()===m&&d.getFullYear()===y;
- })
- .reduce((s,e)=>s+Number(e.amount),0);
+let sum=data.expenses
+.filter(e=>e.date===ds)
+.reduce((s,e)=>s+Number(e.amount),0);
 
- $("cincome").textContent=money(data.salary);
- $("cexpense").textContent=money(month);
- $("ctotal").textContent=money(data.salary-month);
+let cls=current?
+"day":
+"day other";
+
+if(ds===localDate(new Date()))
+cls+=" today";
+
+html+=`
+
+<div class="${cls}"
+onclick="dayModal('${ds}')">
+
+<div>${d.getDate()}</div>
+
+${sum?
+`<div class="dayexp">
+-${money(sum)}
+</div>`:""}
+
+</div>
+
+`;
+
+}
+
+$("days").innerHTML=html;
+
+let month=
+data.expenses
+.filter(e=>{
+let d=new Date(e.date);
+return d.getMonth()===m&&
+d.getFullYear()===y
+})
+.reduce((s,e)=>s+Number(e.amount),0);
+
+$("cincome").textContent=
+money(data.salary);
+
+$("cexpense").textContent=
+money(month);
+
+$("ctotal").textContent=
+money(data.salary-month);
+
 }
 
 function dayModal(date){
- let arr=data.expenses.filter(e=>e.date===date);
- let reminders=data.reminders.filter(r=>r.date===date);
 
- $("dayTitle").textContent=formatDate(date);
+let arr=
+data.expenses.filter(e=>e.date===date);
 
- let expenseHTML=arr.length
- ?arr.map(e=>`
- <div class="expense">
-  <div class="expenseleft">
-   <div class="emoji">${emoji(e.category)}</div>
-   <b>${safe(e.title)}</b>
-  </div>
-  <div class="amount">-${money(e.amount)}</div>
- </div>`).join("")
- :'<div class="empty">No expenses.</div>';
+$("dayTitle").textContent=
+formatDate(date);
 
- let reminderHTML=reminders.length
- ?reminders.map(r=>`
- <div class="reminderCard ${r.completed?"reminderDone":""}">
-  <div class="reminderLeft">
-   <div class="reminderIcon">🔔</div>
-   <div>
-    <div class="reminderTitle">${safe(r.title)}</div>
-    <div class="reminderDate">${r.time||"No time"} • ${safe(r.type)}</div>
-   </div>
-  </div>
-  <div>
-   <div class="reminderAmount">${r.amount?money(r.amount):""}</div>
-   <div class="reminderDue">${r.completed?"COMPLETED":"REMINDER"}</div>
-  </div>
- </div>`).join("")
- :'<div class="empty">No reminders.</div>';
+$("dayList").innerHTML=
+arr.length?
 
- $("dayList").innerHTML=
- '<div style="color:#858ba1;font-size:12px;letter-spacing:2px">EXPENSES</div>'+
- expenseHTML+
- '<div style="color:#858ba1;font-size:12px;letter-spacing:2px;margin-top:15px">REMINDERS</div>'+
- reminderHTML;
+arr.map(e=>`
 
- $("dayModal").classList.remove("hidden");
+<div class="expense">
+
+<div class="expenseleft">
+
+<div class="emoji">
+${emoji(e.category)}
+</div>
+
+<b>${safe(e.title)}</b>
+
+</div>
+
+<div class="amount">
+-${money(e.amount)}
+</div>
+
+</div>
+
+`).join("")
+
+:
+
+'<div class="empty">No transactions.</div>';
+
+$("dayModal").classList.remove("hidden");
+
 }
 
 function closeDay(){
- $("dayModal").classList.add("hidden")
+$("dayModal").classList.add("hidden")
 }
 
 /* STATS */
 
 function stats(){
- let total=expensesTotal(),
- big=data.expenses.length
- ?Math.max(...data.expenses.map(e=>Number(e.amount)))
- :0;
 
- $("average").textContent=
- money(data.expenses.length?total/data.expenses.length:0);
+let total=expensesTotal();
 
- $("biggest").textContent=money(big);
- $("count").textContent=data.expenses.length;
+let big=data.expenses.length?
+Math.max(...data.expenses.map(e=>Number(e.amount))):
+0;
 
- let arr=[];
+$("average").textContent=
+money(
+data.expenses.length?
+total/data.expenses.length:
+0
+);
 
- for(let i=6;i>=0;i--){
-  let d=new Date();
-  d.setDate(d.getDate()-i);
-  arr.push(d)
- }
+$("biggest").textContent=money(big);
 
- let vals=arr.map(d=>
-  data.expenses
-  .filter(e=>e.date===localDate(d))
-  .reduce((s,e)=>s+Number(e.amount),0)
- );
+$("count").textContent=
+data.expenses.length;
 
- let max=Math.max(...vals,1);
+let arr=[];
 
- $("bars").innerHTML=arr.map((d,i)=>`
- <div class="barwrap">
-  <small style="color:#858ba0;font-size:9px">
-   ${vals[i]?money(vals[i]):""}
-  </small>
-  <div class="bar" style="height:${Math.max(3,vals[i]/max*190)}px"></div>
-  <small style="color:#777d94">
-   ${d.toLocaleDateString("en-US",{weekday:"short"})}
-  </small>
- </div>`).join("");
+for(let i=6;i>=0;i--){
+
+let d=new Date();
+d.setDate(d.getDate()-i);
+arr.push(d);
+
+}
+
+let vals=arr.map(d=>
+data.expenses
+.filter(e=>e.date===localDate(d))
+.reduce((s,e)=>s+Number(e.amount),0)
+);
+
+let max=Math.max(...vals,1);
+
+$("bars").innerHTML=
+arr.map((d,i)=>`
+
+<div class="barwrap">
+
+<small style="color:#858ba0;font-size:9px">
+${vals[i]?money(vals[i]):""}
+</small>
+
+<div class="bar"
+style="height:${Math.max(
+3,
+vals[i]/max*190
+)}px">
+</div>
+
+<small style="color:#777d94">
+${d.toLocaleDateString(
+"en-US",
+{weekday:"short"}
+)}
+</small>
+
+</div>
+
+`).join("");
+
 }
 
 /* CAMERA + OCR */
 
 async function startCamera(){
- if(!navigator.mediaDevices?.getUserMedia)
-  return toast("Camera not supported");
 
- try{
-  stream=await navigator.mediaDevices.getUserMedia({
-   video:{facingMode:{ideal:"environment"}},
-   audio:false
-  });
+if(!navigator.mediaDevices?.getUserMedia)
+return toast("Camera not supported");
 
-  $("video").srcObject=stream;
-  await $("video").play();
-  $("scanStatus").textContent="Camera active.";
+try{
 
- }catch(e){
-  $("scanStatus").textContent="Camera unavailable. Use Upload Receipt.";
-  toast("Camera permission unavailable")
- }
+stream=
+await navigator.mediaDevices.getUserMedia({
+video:{
+facingMode:{
+ideal:"environment"
+}
+},
+audio:false
+});
+
+$("video").srcObject=stream;
+
+await $("video").play();
+
+$("scanStatus").textContent=
+"Camera active.";
+
+}catch(e){
+
+$("scanStatus").textContent=
+"Camera unavailable. Use Upload Receipt.";
+
+toast(
+"Camera permission unavailable"
+);
+
+}
+
 }
 
 function stopCamera(){
- if(stream){
-  stream.getTracks().forEach(t=>t.stop());
-  stream=null
- }
 
- $("video").srcObject=null;
- $("scanStatus").textContent="Camera stopped.";
+if(stream){
+
+stream.getTracks()
+.forEach(t=>t.stop());
+
+stream=null;
+
+}
+
+$("video").srcObject=null;
+
+$("scanStatus").textContent=
+"Camera stopped.";
+
 }
 
 function capture(){
- let v=$("video");
 
- if(!v.srcObject)return toast("Start camera first");
+let v=$("video");
 
- let c=document.createElement("canvas");
- c.width=v.videoWidth;
- c.height=v.videoHeight;
+if(!v.srcObject)
+return toast("Start camera first");
 
- c.getContext("2d").drawImage(v,0,0);
+let c=document.createElement("canvas");
 
- c.toBlob(b=>ocr(b),"image/jpeg",.92);
+c.width=v.videoWidth;
+c.height=v.videoHeight;
+
+c.getContext("2d")
+.drawImage(v,0,0);
+
+c.toBlob(
+b=>ocr(b),
+"image/jpeg",
+.92
+);
+
 }
 
-$("file").addEventListener("change",e=>{
- if(e.target.files[0])ocr(e.target.files[0])
-});
+$("file").addEventListener(
+"change",
+e=>{
+if(e.target.files[0])
+ocr(e.target.files[0])
+}
+);
 
 async function ocr(image){
- $("scanStatus").textContent="Reading receipt...";
- $("ocr").classList.remove("hidden");
- $("ocr").textContent="Processing...";
 
- try{
-  let r=await Tesseract.recognize(
-   image,
-   "eng",
-   {
-    logger:x=>{
-     if(x.status==="recognizing text")
-      $("scanStatus").textContent=
-      "Reading "+Math.round(x.progress*100)+"%"
-    }
-   }
-  );
+$("scanStatus").textContent=
+"Reading receipt...";
 
-  let text=r.data.text||"";
+$("ocr").classList.remove("hidden");
 
-  $("ocr").textContent=text||"No text detected.";
+$("ocr").textContent=
+"Processing...";
 
-  let p=parseReceipt(text);
+try{
 
-  $("stitle").value=p.title;
-  $("samount").value=p.amount||"";
-  $("sdate").value=p.date;
+let r=
+await Tesseract.recognize(
+image,
+"eng",
+{
+logger:x=>{
 
-  $("scanForm").classList.remove("hidden");
-  $("scanStatus").textContent="Scan complete. Check details.";
+if(x.status==="recognizing text")
+$("scanStatus").textContent=
+"Reading "+
+Math.round(x.progress*100)+
+"%";
 
- }catch(e){
-  $("ocr").textContent="OCR failed. Try a clearer image.";
-  $("scanStatus").textContent="Could not read receipt."
- }
+}
+}
+);
+
+let text=r.data.text||"";
+
+$("ocr").textContent=
+text||"No text detected.";
+
+let p=parseReceipt(text);
+
+$("stitle").value=p.title;
+$("samount").value=p.amount||"";
+$("sdate").value=p.date;
+
+$("scanForm").classList.remove("hidden");
+
+$("scanStatus").textContent=
+"Scan complete. Check details.";
+
+}catch(e){
+
+$("ocr").textContent=
+"OCR failed. Try a clearer image.";
+
+$("scanStatus").textContent=
+"Could not read receipt.";
+
+}
+
 }
 
 function parseReceipt(text){
- let amount=null;
 
- let patterns=[
-  /(?:total|amount|grand total|net total)[^\d₹]*₹?\s*([\d,]+(?:\.\d{1,2})?)/i,
-  /₹\s*([\d,]+(?:\.\d{1,2})?)/,
-  /\b(\d{2,6}(?:\.\d{1,2})?)\b/
- ];
+let amount=null;
 
- for(let p of patterns){
-  let m=text.match(p);
+let patterns=[
 
-  if(m){
-   amount=Number(m[1].replace(/,/g,""));
-   if(amount>0)break
-  }
- }
+/(?:total|amount|grand total|net total)[^\d₹]*₹?\s*([\d,]+(?:\.\d{1,2})?)/i,
 
- let title="Scanned Expense";
+/₹\s*([\d,]+(?:\.\d{1,2})?)/,
 
- for(let line of text
- .split("\n")
- .map(x=>x.trim())
- .filter(Boolean)){
+/\b(\d{2,6}(?:\.\d{1,2})?)\b/
 
-  if(
-   line.length>=3&&
-   line.length<=40&&
-   !/^(total|subtotal|amount|tax|gst|cash|change|date|invoice|bill|receipt)$/i.test(line)&&
-   !/\d/.test(line)
-  ){
-   title=line;
-   break
-  }
- }
+];
 
- let date=localDate(new Date()),
- m=text.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+for(let p of patterns){
 
- if(m){
-  let y=m[3].length===2?"20"+m[3]:m[3];
+let m=text.match(p);
 
-  date=
-  `${y}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`
- }
+if(m){
 
- return {title,amount,date};
+amount=
+Number(
+m[1].replace(/,/g,"")
+);
+
+if(amount>0)break;
+
+}
+
+}
+
+let title="Scanned Expense";
+
+for(let line of text
+.split("\n")
+.map(x=>x.trim())
+.filter(Boolean)){
+
+if(
+line.length>=3&&
+line.length<=40&&
+!/^(total|subtotal|amount|tax|gst|cash|change|date|invoice|bill|receipt)$/i.test(line)&&
+!/\d/.test(line)
+){
+
+title=line;
+break;
+
+}
+
+}
+
+let date=localDate(new Date());
+
+let m=
+text.match(
+/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/
+);
+
+if(m){
+
+let y=
+m[3].length===2?
+"20"+m[3]:
+m[3];
+
+date=
+`${y}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
+
+}
+
+return {
+title,
+amount,
+date
+};
+
 }
 
 function saveScan(){
- let title=$("stitle").value.trim(),
- amount=Number($("samount").value),
- date=$("sdate").value;
 
- if(!title||amount<=0||!date)
-  return toast("Check scanned details");
+let title=
+$("stitle").value.trim();
 
- data.expenses.push({
-  id:Date.now(),
-  title,
-  amount,
-  date,
-  category:$("scat").value
- });
+let amount=
+Number($("samount").value);
 
- save();
+let date=
+$("sdate").value;
 
- $("scanForm").classList.add("hidden");
- $("ocr").classList.add("hidden");
+if(!title||amount<=0||!date)
+return toast("Check scanned details");
 
- refresh();
+data.expenses.push({
 
- toast(money(amount)+" deducted from balance");
+id:Date.now(),
+title,
+amount,
+date,
+category:$("scat").value
+
+});
+
+save();
+
+$("scanForm").classList.add("hidden");
+$("ocr").classList.add("hidden");
+
+refresh();
+
+toast(
+money(amount)+
+" deducted from balance"
+);
+
 }
 
-/* REMINDERS - NEW FEATURE */
+/* =========================
+   REMINDER SYSTEM
+   ========================= */
 
 function toggleReminder(){
- $("reminderForm").classList.toggle("hidden");
 
- if(!$("reminderForm").classList.contains("hidden")){
-  $("rdate").value=localDate(new Date());
+$("reminderForm")
+.classList.toggle("hidden");
 
-  let now=new Date();
-  $("rtime").value=
-   String(now.getHours()).padStart(2,"0")+":"+
-   String(now.getMinutes()+1).padStart(2,"0");
- }
+if(!$("reminderForm").classList.contains("hidden")){
+
+$("rdate").value=
+localDate(new Date());
+
+let d=new Date();
+
+d.setMinutes(
+d.getMinutes()+5
+);
+
+$("rtime").value=
+String(d.getHours()).padStart(2,"0")+
+":"+
+String(d.getMinutes()).padStart(2,"0");
+
+}
+
 }
 
 function addReminder(){
- let title=$("rtitle").value.trim(),
- amount=Number($("ramount").value)||0,
- date=$("rdate").value,
- time=$("rtime").value,
- type=$("rtype").value;
 
- if(!title)return toast("Enter reminder title");
- if(!date)return toast("Select due date");
- if(!time)return toast("Select reminder time");
+let title=
+$("rtitle").value.trim();
 
- data.reminders.push({
-  id:Date.now(),
-  title,
-  amount,
-  date,
-  time,
-  type,
-  completed:false,
-  alerted:false
- });
+let date=
+$("rdate").value;
 
- save();
+let time=
+$("rtime").value;
 
- $("rtitle").value="";
- $("ramount").value="";
- $("rdate").value="";
- $("rtime").value="";
+if(!title)
+return toast("Enter reminder title");
 
- $("reminderForm").classList.add("hidden");
+if(!date)
+return toast("Select reminder date");
 
- refresh();
+if(!time)
+return toast("Select reminder time");
 
- toast("🔔 Reminder added");
+let reminderDate=
+new Date(
+date+"T"+time
+);
+
+if(reminderDate.getTime()<=Date.now())
+return toast("Choose a future time");
+
+data.reminders.push({
+
+id:Date.now(),
+title:title,
+date:date,
+time:time,
+triggered:false
+
+});
+
+save();
+
+$("rtitle").value="";
+$("rdate").value="";
+$("rtime").value="";
+
+$("reminderForm").classList.add("hidden");
+
+renderReminders();
+
+toast("Reminder saved 🔔");
+
 }
 
 function renderReminders(){
- let list=$("reminderList");
 
- if(!data.reminders.length){
-  list.innerHTML=
-  '<div class="empty">🔔<br><b>No reminders yet</b><br>Add an EMI, bill or payment reminder.</div>';
+let list=$("reminderList");
 
-  $("upcomingReminders").textContent=0;
-  $("todayReminders").textContent=0;
-  $("completedReminders").textContent=0;
-  return;
- }
+if(!data.reminders.length){
 
- let today=localDate(new Date());
+list.innerHTML=
+`
+<div class="empty">
+🔔<br>
+<b>No reminders yet</b><br>
+Add a reminder for bills, EMIs or payments.
+</div>
+`;
 
- let upcoming=data.reminders.filter(r=>!r.completed&&r.date>=today).length;
- let dueToday=data.reminders.filter(r=>!r.completed&&r.date===today).length;
- let completed=data.reminders.filter(r=>r.completed).length;
+return;
 
- $("upcomingReminders").textContent=upcoming;
- $("todayReminders").textContent=dueToday;
- $("completedReminders").textContent=completed;
-
- list.innerHTML=[...data.reminders]
- .sort((a,b)=>{
-  let aa=a.date+" "+(a.time||"");
-  let bb=b.date+" "+(b.time||"");
-  return aa.localeCompare(bb);
- })
- .map(r=>{
-  let due=isReminderDue(r);
-
-  return `
-  <div class="reminderCard ${r.completed?"reminderDone":""}">
-   <div class="reminderLeft">
-    <div class="reminderIcon">🔔</div>
-
-    <div>
-     <div class="reminderTitle">${safe(r.title)}</div>
-
-     <div class="reminderDate">
-      ${formatDate(r.date)}
-      ${r.time?" • "+r.time:""}
-      • ${safe(r.type)}
-     </div>
-
-     ${!r.completed&&due
-      ?'<div class="reminderDue">⚠️ DUE NOW</div>'
-      :""}
-
-     ${!r.completed&&!due&&r.date===today
-      ?'<div style="color:#ffd166;font-size:11px;font-weight:800;margin-top:4px">TODAY</div>'
-      :""}
-    </div>
-   </div>
-
-   <div style="text-align:right">
-    ${r.amount?`<div class="reminderAmount">${money(r.amount)}</div>`:""}
-
-    <div class="reminderButtons">
-     ${!r.completed
-      ?`<button class="doneBtn" onclick="completeReminder(${r.id})">✓ Done</button>`
-      :""}
-
-     <button class="reminderDelete" onclick="deleteReminder(${r.id})">Delete</button>
-    </div>
-   </div>
-  </div>`;
- }).join("");
 }
 
-function isReminderDue(r){
- if(r.completed)return false;
+let sorted=
+[...data.reminders].sort(
+(a,b)=>
+new Date(a.date+"T"+a.time)-
+new Date(b.date+"T"+b.time)
+);
 
- let due=new Date(r.date+"T"+(r.time||"23:59"));
- return new Date()>=due;
-}
+list.innerHTML=
+sorted.map(r=>{
 
-function completeReminder(id){
- let r=data.reminders.find(x=>x.id===id);
- if(!r)return;
+let done=r.triggered?
+" reminderDone":
+"";
 
- r.completed=true;
+return `
 
- save();
- renderReminders();
- calendar();
+<div class="reminderCard${done}">
 
- toast("✅ Reminder completed");
+<div class="reminderLeft">
+
+<div class="reminderIcon">
+🔔
+</div>
+
+<div>
+
+<div class="reminderTitle">
+${safe(r.title)}
+</div>
+
+<div class="reminderTime">
+📅 ${formatDate(r.date)}
+&nbsp; • &nbsp;
+⏰ ${r.time}
+</div>
+
+${r.triggered?
+'<div style="color:#72d69f;font-size:12px;margin-top:5px">✓ Completed</div>':
+""}
+
+</div>
+
+</div>
+
+<button class="reminderDelete"
+onclick="deleteReminder(${r.id})">
+Delete
+</button>
+
+</div>
+
+`;
+
+}).join("");
+
 }
 
 function deleteReminder(id){
- let r=data.reminders.find(x=>x.id===id);
 
- if(r&&confirm("Delete this reminder?")){
-  data.reminders=data.reminders.filter(x=>x.id!==id);
+data.reminders=
+data.reminders.filter(
+r=>r.id!==id
+);
 
-  save();
-  renderReminders();
-  calendar();
+save();
+renderReminders();
 
-  toast("Reminder deleted");
- }
+toast("Reminder deleted");
+
+}
+
+/*
+  Checks reminders every second.
+  The sound is generated by the browser itself,
+  so no extra audio file is required.
+*/
+
+function startReminderChecker(){
+
+if(reminderTimer)
+clearInterval(reminderTimer);
+
+reminderTimer=
+setInterval(
+checkReminders,
+1000
+);
+
+checkReminders();
+
 }
 
 function checkReminders(){
- if(!data.reminders.length)return;
 
- let now=new Date();
- let changed=false;
+if(
+!data.reminders||
+!data.reminders.length
+)return;
 
- data.reminders.forEach(r=>{
-  if(r.completed||r.alerted)return;
+let now=Date.now();
 
-  let due=new Date(r.date+"T"+(r.time||"23:59"));
+data.reminders.forEach(r=>{
 
-  if(now>=due){
-   r.alerted=true;
-   changed=true;
+if(r.triggered)
+return;
 
-   toast("🔔 Reminder: "+r.title);
+let reminderTime=
+new Date(
+r.date+"T"+r.time
+).getTime();
 
-   if("Notification" in window){
-    if(Notification.permission==="granted"){
-     new Notification("Finance Manager 🔔",{
-      body:r.title+(r.amount?" • "+money(r.amount):"")
-     });
-    }
-   }
-  }
- });
+if(
+reminderTime<=now &&
+reminderTime>now-30000
+){
 
- if(changed)save();
+r.triggered=true;
 
- renderReminders();
+save();
+
+showReminderAlert(r.title);
+
+playReminderSound();
+
 }
 
-async function enableNotifications(){
- if(!("Notification" in window))return;
+});
 
- if(Notification.permission==="default"){
-  try{
-   await Notification.requestPermission();
-  }catch(e){}
- }
+renderReminders();
+
+}
+
+function playReminderSound(){
+
+try{
+
+let AudioContext=
+window.AudioContext||
+window.webkitAudioContext;
+
+if(!AudioContext)
+return;
+
+let ctx=new AudioContext();
+
+let now=ctx.currentTime;
+
+let frequencies=[
+880,
+660,
+880,
+660
+];
+
+frequencies.forEach(
+(f,i)=>{
+
+let osc=
+ctx.createOscillator();
+
+let gain=
+ctx.createGain();
+
+osc.type="sine";
+
+osc.frequency.value=f;
+
+gain.gain.setValueAtTime(
+0,
+now+i*.25
+);
+
+gain.gain.linearRampToValueAtTime(
+0.25,
+now+i*.25+0.03
+);
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+now+i*.25+0.20
+);
+
+osc.connect(gain);
+gain.connect(ctx.destination);
+
+osc.start(
+now+i*.25
+);
+
+osc.stop(
+now+i*.25+0.22
+);
+
+}
+);
+
+}catch(e){
+
+console.log(
+"Reminder sound unavailable"
+);
+
+}
+
+}
+
+function showReminderAlert(title){
+
+let old=
+document.getElementById(
+"reminderAlert"
+);
+
+if(old)
+old.remove();
+
+let box=
+document.createElement("div");
+
+box.id="reminderAlert";
+
+box.className=
+"reminderAlert";
+
+box.innerHTML=`
+
+<div style="font-size:42px">
+🔔
+</div>
+
+<h2 style="margin-top:8px">
+Reminder
+</h2>
+
+<p style="
+color:#aeb3c5;
+margin:10px 0 18px;
+font-size:16px
+">
+${safe(title)}
+</p>
+
+<button class="btn"
+onclick="closeReminderAlert()">
+OK
+</button>
+
+`;
+
+document.body.appendChild(box);
+
+}
+
+function closeReminderAlert(){
+
+let box=
+document.getElementById(
+"reminderAlert"
+);
+
+if(box)
+box.remove();
+
 }
 
 /* HELPERS */
 
 function localDate(d){
- let y=d.getFullYear(),
- m=String(d.getMonth()+1).padStart(2,"0"),
- day=String(d.getDate()).padStart(2,"0");
 
- return `${y}-${m}-${day}`;
+let y=d.getFullYear();
+
+let m=
+String(d.getMonth()+1)
+.padStart(2,"0");
+
+let day=
+String(d.getDate())
+.padStart(2,"0");
+
+return `${y}-${m}-${day}`;
+
 }
 
 function formatDate(x){
- return new Date(x+"T00:00:00")
- .toLocaleDateString("en-IN",{
-  day:"numeric",
-  month:"short",
-  year:"numeric"
- })
+
+return new Date(
+x+"T00:00:00"
+).toLocaleDateString(
+"en-IN",
+{
+day:"numeric",
+month:"short",
+year:"numeric"
+}
+);
+
 }
 
 function toast(msg){
- $("toast").textContent=msg;
- $("toast").classList.add("show");
 
- setTimeout(()=>$("toast").classList.remove("show"),2500)
+$("toast").textContent=msg;
+
+$("toast").classList.add("show");
+
+setTimeout(
+()=>$("toast").classList.remove("show"),
+2500
+);
+
 }
 
-$("edate").value=localDate(new Date());
+$("edate").value=
+localDate(new Date());
 
-/* CHECK REMINDERS REGULARLY */
-setInterval(checkReminders,30000);
-
-/* ASK FOR NOTIFICATION PERMISSION WHEN REMINDERS ARE USED */
-document.addEventListener("click",function(e){
- if(e.target.closest("#nReminders")||e.target.closest("#reminderForm")){
-  enableNotifications();
- }
-});
 </script>
+
 </body>
 </html>
